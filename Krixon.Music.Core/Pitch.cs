@@ -14,6 +14,21 @@ namespace Krixon.Music.Core
         {
         }
 
+        public static explicit operator int(Pitch pitch)
+        {
+            return (pitch.NoteLetter switch
+            {
+                NoteLetter.C => 0,
+                NoteLetter.D => 2,
+                NoteLetter.E => 4,
+                NoteLetter.F => 5,
+                NoteLetter.G => 7,
+                NoteLetter.A => 9,
+                NoteLetter.B => 11,
+                _ => throw new ArgumentOutOfRangeException()
+            } + pitch.Accidentals) % 12;
+        }
+
         private static class Parser
         {
             public static NoteLetter NoteLetter(string str)

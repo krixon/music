@@ -4,6 +4,7 @@ using NUnit.Framework;
 
 namespace Krixon.Music.Core.Test
 {
+    [TestFixture]
     public class PitchTests
     {
         public static IEnumerable<TestCaseData> StringSource()
@@ -80,6 +81,32 @@ namespace Krixon.Music.Core.Test
             var exception = Assert.Throws<ArgumentException>(() => new Pitch(str));
 
             Assert.That(exception.Message, Does.Contain("contains unknown accidental").IgnoreCase);
+        }
+
+        [Test]
+        [TestCase("C", 0)]
+        [TestCase("C#", 1)]
+        [TestCase("Db", 1)]
+        [TestCase("D", 2)]
+        [TestCase("D#", 3)]
+        [TestCase("Eb", 3)]
+        [TestCase("E", 4)]
+        [TestCase("E#", 5)]
+        [TestCase("Fb", 4)]
+        [TestCase("F", 5)]
+        [TestCase("F#", 6)]
+        [TestCase("Gb", 6)]
+        [TestCase("G", 7)]
+        [TestCase("G#", 8)]
+        [TestCase("Ab", 8)]
+        [TestCase("A", 9)]
+        [TestCase("A#", 10)]
+        [TestCase("Bb", 10)]
+        [TestCase("B", 11)]
+        [TestCase("B#", 0)]
+        public void Operator_IntCast(string pitch, int expected)
+        {
+            Assert.AreEqual(expected, (int) new Pitch(pitch));
         }
     }
 }
