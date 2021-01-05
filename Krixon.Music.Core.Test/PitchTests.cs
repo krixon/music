@@ -83,6 +83,32 @@ namespace Krixon.Music.Core.Test
             Assert.That(exception.Message, Does.Contain("contains unknown accidental").IgnoreCase);
         }
 
+        public static IEnumerable<TestCaseData> IntCastSource()
+        {
+            yield return new TestCaseData("C", 0);
+            yield return new TestCaseData("C#", 1);
+            yield return new TestCaseData("Db", 1);
+            yield return new TestCaseData("D", 2);
+            yield return new TestCaseData("D#", 3);
+            yield return new TestCaseData("Eb", 3);
+            yield return new TestCaseData("E", 4);
+            yield return new TestCaseData("E#", 5);
+            yield return new TestCaseData("Fb", 4);
+            yield return new TestCaseData("F", 5);
+            yield return new TestCaseData("F#", 6);
+            yield return new TestCaseData("Gb", 6);
+            yield return new TestCaseData("G", 7);
+            yield return new TestCaseData("G#", 8);
+            yield return new TestCaseData("Ab", 8);
+            yield return new TestCaseData("A", 9);
+            yield return new TestCaseData("A#", 10);
+            yield return new TestCaseData("Bb", 10);
+            yield return new TestCaseData("B", 11);
+            yield return new TestCaseData("B#", 0);
+            yield return new TestCaseData("C##", 2);
+            yield return new TestCaseData("Dbb", 0);
+        }
+
         [Test]
         [TestCase("C", 0)]
         [TestCase("C#", 1)]
@@ -104,9 +130,29 @@ namespace Krixon.Music.Core.Test
         [TestCase("Bb", 10)]
         [TestCase("B", 11)]
         [TestCase("B#", 0)]
-        public void Operator_IntCast(string pitch, int expected)
+        [TestCase("C##", 2)]
+        [TestCase("Dbb", 0)]
+        public void Operator_CastToInt(string pitch, int expected)
         {
             Assert.AreEqual(expected, (int) new Pitch(pitch));
+        }
+
+        [Test]
+        [TestCase(0, "C")]
+        [TestCase(1, "C#")]
+        [TestCase(2, "D")]
+        [TestCase(3, "D#")]
+        [TestCase(4, "E")]
+        [TestCase(5, "F")]
+        [TestCase(6, "F#")]
+        [TestCase(7, "G")]
+        [TestCase(8, "G#")]
+        [TestCase(9, "A")]
+        [TestCase(10, "A#")]
+        [TestCase(11, "B")]
+        public void Operator_CastFromInt(int pitch, string expected)
+        {
+            Assert.AreEqual(expected, (Pitch) pitch);
         }
     }
 }
