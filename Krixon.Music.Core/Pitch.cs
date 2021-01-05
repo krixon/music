@@ -10,85 +10,88 @@ namespace Krixon.Music.Core
     /// </summary>
     public record Pitch(NoteLetter NoteLetter, int Accidentals)
     {
-        public Pitch(string str) : this(ParseNoteLetter(str), ParseAccidentals(str))
+        public Pitch(string str) : this(Parser.NoteLetter(str), Parser.Accidentals(str))
         {
         }
 
-        private static NoteLetter ParseNoteLetter(string str)
+        private static class Parser
         {
-            try
+            public static NoteLetter NoteLetter(string str)
             {
-                return Enum.Parse<NoteLetter>(Normalize(str).Substring(0, 1).ToUpperInvariant());
-            }
-            catch (ArgumentException exception)
-            {
-                throw new ArgumentException("Pitch string does not contain a valid note letter.", exception);
-            }
-        }
-
-        private static int ParseAccidentals(string str)
-        {
-            str = Normalize(str);
-
-            // A note letter on its own has no accidentals.
-            if (str.Length < 2) return 0;
-
-            var result = 0;
-
-            var sharps = new Dictionary<string, int>
-            {
-                ["#"] = 1,
-                ["s"] = 1,
-                ["S"] = 1,
-                ["♯"] = 1,
-                ["𝄪"] = 2,
-                ["x"] = 2,
-                ["X"] = 2,
-            };
-
-            var flats = new Dictionary<string, int>
-            {
-                ["b"] = -1,
-                ["♭"] = -1,
-                ["𝄫"] = -2,
-            };
-
-            // The active accidental dictionary.
-            // This is set to either sharps or flats based on the first encountered non-natural symbol.
-            // By using the same dictionary, invalid accidental combinations such as C♯♭ are not parsed.
-            Dictionary<string, int>? active = null;
-
-            var charEnumerator = StringInfo.GetTextElementEnumerator(str.Substring(1));
-
-            while (charEnumerator.MoveNext())
-            {
-                var symbol = charEnumerator.GetTextElement();
-
-                // Naturals do not contribute to the final value.
-                if (symbol == "♮") continue;
-
-                if (active is null)
+                try
                 {
-                    if (sharps.ContainsKey(symbol)) active = sharps;
-                    else if (flats.ContainsKey(symbol)) active = flats;
+                    return Enum.Parse<NoteLetter>(Normalize(str).Substring(0, 1).ToUpperInvariant());
+                }
+                catch (ArgumentException exception)
+                {
+                    throw new ArgumentException("Pitch string does not contain a valid note letter.", exception);
+                }
+            }
+
+            public static int Accidentals(string str)
+            {
+                str = Normalize(str);
+
+                // A note letter on its own has no accidentals.
+                if (str.Length < 2) return 0;
+
+                var result = 0;
+
+                var sharps = new Dictionary<string, int>
+                {
+                    ["#"] = 1,
+                    ["s"] = 1,
+                    ["S"] = 1,
+                    ["♯"] = 1,
+                    ["𝄪"] = 2,
+                    ["x"] = 2,
+                    ["X"] = 2,
+                };
+
+                var flats = new Dictionary<string, int>
+                {
+                    ["b"] = -1,
+                    ["♭"] = -1,
+                    ["𝄫"] = -2,
+                };
+
+                // The active accidental dictionary.
+                // This is set to either sharps or flats based on the first encountered non-natural symbol.
+                // By using the same dictionary, invalid accidental combinations such as C♯♭ are not parsed.
+                Dictionary<string, int>? active = null;
+
+                var charEnumerator = StringInfo.GetTextElementEnumerator(str.Substring(1));
+
+                while (charEnumerator.MoveNext())
+                {
+                    var symbol = charEnumerator.GetTextElement();
+
+                    // Naturals do not contribute to the final value.
+                    if (symbol == "♮") continue;
+
+                    if (active is null)
+                    {
+                        if (sharps.ContainsKey(symbol)) active = sharps;
+                        else if (flats.ContainsKey(symbol)) active = flats;
+                    }
+
+                    if (!(active?.ContainsKey(symbol) ?? false))
+                    {
+                        throw new ArgumentException(
+                            $"Pitch string `{str}` contains unknown accidental `{symbol}`.",
+                            nameof(str));
+                    }
+
+                    result += active[symbol];
                 }
 
-                if (!(active?.ContainsKey(symbol) ?? false))
-                {
-                    throw new ArgumentException(
-                        $"Pitch string `{str}` contains unknown accidental `{symbol}`.",
-                        nameof(str));
-                }
-
-                result += active[symbol];
+                return result;
             }
 
-            return result;
-        }
-
-        private static string Normalize(string str)
-        {
-            return Regex.Replace(str, @"\s+", "");
+            private static string Normalize(string str)
+            {
+                return Regex.Replace(str, @"\s+", "");
+            }
         }
     }
 }
