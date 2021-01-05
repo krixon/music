@@ -31,9 +31,9 @@ namespace Krixon.Music.Core.Test
 
             foreach (var note in Enum.GetValues<NoteLetter>())
             {
-                foreach (var symbol in expected)
+                foreach (var (symbols, accidentals) in expected)
                 {
-                    yield return new TestCaseData($"{note}{symbol.Key}", note, symbol.Value);
+                    yield return new TestCaseData($"{note}{symbols}", note, accidentals);
                 }
             }
         }
@@ -46,15 +46,40 @@ namespace Krixon.Music.Core.Test
         }
 
         [Test]
+        public void Construct_FromString_IgnoresCase()
+        {
+            Assert.AreEqual(new Pitch("A"), new Pitch("a"));
+        }
+
+        [Test]
+        public void Construct_FromString_IgnoresWhitespace()
+        {
+            Assert.AreEqual(new Pitch("A#"), new Pitch(" \tA   #\t\t\t"));
+        }
+
+        [Test]
+        [TestCase("")]
+        [TestCase("H")]
+        [TestCase("!")]
+        public void Construct_FromString_RejectsInvalidNoteLetter(string str)
+        {
+            var exception = Assert.Throws<ArgumentException>(() => new Pitch(str));
+
+            Assert.That(exception.Message, Does.Contain("does not contain a valid note letter").IgnoreCase);
+        }
+
+        [Test]
         [TestCase("CC")]
         [TestCase("Ca")]
         [TestCase("C~")]
         [TestCase("C~")]
         [TestCase("C+")]
         [TestCase("C-")]
-        public void Construct_FromString_WithInvalidAccidental(string str)
+        public void Construct_FromString_RejectsInvalidAccidental(string str)
         {
-            Assert.Throws<ArgumentException>(() => new Pitch(str), "contains unknown accidental");
+            var exception = Assert.Throws<ArgumentException>(() => new Pitch(str));
+
+            Assert.That(exception.Message, Does.Contain("contains unknown accidental").IgnoreCase);
         }
     }
 }

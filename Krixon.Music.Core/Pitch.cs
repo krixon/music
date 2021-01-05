@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Text.RegularExpressions;
 
 namespace Krixon.Music.Core
 {
@@ -15,11 +16,20 @@ namespace Krixon.Music.Core
 
         private static NoteLetter ParseNoteLetter(string str)
         {
-            return Enum.Parse<NoteLetter>(str.Substring(0, 1));
+            try
+            {
+                return Enum.Parse<NoteLetter>(Normalize(str).Substring(0, 1).ToUpperInvariant());
+            }
+            catch (ArgumentException exception)
+            {
+                throw new ArgumentException("Pitch string does not contain a valid note letter.", exception);
+            }
         }
 
         private static int ParseAccidentals(string str)
         {
+            str = Normalize(str);
+
             // A note letter on its own has no accidentals.
             if (str.Length < 2) return 0;
 
@@ -74,6 +84,11 @@ namespace Krixon.Music.Core
             }
 
             return result;
+        }
+
+        private static string Normalize(string str)
+        {
+            return Regex.Replace(str, @"\s+", "");
         }
     }
 }
