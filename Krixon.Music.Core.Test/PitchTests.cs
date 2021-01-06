@@ -141,5 +141,44 @@ namespace Krixon.Music.Core.Test
         {
             Assert.AreEqual(Pitch.Parse(expected), (Pitch) pitch);
         }
+
+        [Test]
+        [TestCase("C", -16, "G#")]
+        [TestCase("C", -15, "A")]
+        [TestCase("C", -14, "A#")]
+        [TestCase("C", -13, "B")]
+        [TestCase("C", -12, "C")]
+        [TestCase("C", -11, "C#")]
+        [TestCase("C", -10, "D")]
+        [TestCase("C", -9, "D#")]
+        [TestCase("C", -8, "E")]
+        [TestCase("C", -7, "F")]
+        [TestCase("C", -6, "F#")]
+        [TestCase("C", -5, "G")]
+        [TestCase("C", -4, "G#")]
+        [TestCase("C", -3, "A")]
+        [TestCase("C", -2, "A#")]
+        [TestCase("C", -1, "B")]
+        [TestCase("C", 0, "C")]
+        [TestCase("C", 1, "C#")]
+        [TestCase("C", 2, "D")]
+        [TestCase("C", 3, "D#")]
+        [TestCase("C", 4, "E")]
+        [TestCase("C", 5, "F")]
+        [TestCase("C", 6, "F#")]
+        [TestCase("C", 7, "G")]
+        [TestCase("C", 8, "G#")]
+        [TestCase("C", 9, "A")]
+        [TestCase("C", 10, "A#")]
+        [TestCase("C", 11, "B")]
+        [TestCase("C", 12, "C")]
+        [TestCase("C", 13, "C#")]
+        [TestCase("C", 14, "D")]
+        [TestCase("C", 15, "D#")]
+        [TestCase("C", 16, "E")]
+        public static void Transpose(string pitch, int semitones, string expected)
+        {
+            Assert.AreEqual(Pitch.Parse(expected), Pitch.Parse(pitch).Transpose(semitones));
+        }
     }
 }

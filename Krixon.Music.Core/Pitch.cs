@@ -53,6 +53,11 @@ namespace Krixon.Music.Core
             };
         }
 
+        public Pitch Transpose(int semitones)
+        {
+            return this + semitones;
+        }
+
         private static class Parser
         {
             public static NoteLetter NoteLetter(string str)
