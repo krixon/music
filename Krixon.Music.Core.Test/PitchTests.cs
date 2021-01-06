@@ -41,19 +41,19 @@ namespace Krixon.Music.Core.Test
 
         [Test]
         [TestCaseSource(nameof(StringSource))]
-        public void Parse(string str, NoteLetter expectedNoteLetter, int expectedAccidentals)
+        public static void Parse(string str, NoteLetter expectedNoteLetter, int expectedAccidentals)
         {
             Assert.AreEqual(new Pitch(expectedNoteLetter, expectedAccidentals), Pitch.Parse(str));
         }
 
         [Test]
-        public void Parse_IgnoresCase()
+        public static void Parse_IgnoresCase()
         {
             Assert.AreEqual(Pitch.Parse("A"), Pitch.Parse("a"));
         }
 
         [Test]
-        public void Parse_IgnoresWhitespace()
+        public static void Parse_IgnoresWhitespace()
         {
             Assert.AreEqual(Pitch.Parse("A#"), Pitch.Parse(" \tA   #\t\t\t"));
         }
@@ -62,7 +62,7 @@ namespace Krixon.Music.Core.Test
         [TestCase("")]
         [TestCase("H")]
         [TestCase("!")]
-        public void Parse_RejectsInvalidNoteLetter(string str)
+        public static void Parse_RejectsInvalidNoteLetter(string str)
         {
             var exception = Assert.Throws<ArgumentException>(() => Pitch.Parse(str));
 
@@ -76,7 +76,7 @@ namespace Krixon.Music.Core.Test
         [TestCase("C~")]
         [TestCase("C+")]
         [TestCase("C-")]
-        public void Parse_RejectsInvalidAccidental(string str)
+        public static void Parse_RejectsInvalidAccidental(string str)
         {
             var exception = Assert.Throws<ArgumentException>(() => Pitch.Parse(str));
 
@@ -106,7 +106,7 @@ namespace Krixon.Music.Core.Test
         [TestCase("B#", 0)]
         [TestCase("C##", 2)]
         [TestCase("Dbb", 0)]
-        public void Operator_CastToInt(string pitch, int expected)
+        public static void Operator_CastToInt(string pitch, int expected)
         {
             Assert.AreEqual(expected, (int) Pitch.Parse(pitch));
         }
@@ -124,7 +124,7 @@ namespace Krixon.Music.Core.Test
         [TestCase(9, "A")]
         [TestCase(10, "A#")]
         [TestCase(11, "B")]
-        public void Operator_CastFromInt(int pitch, string expected)
+        public static void Operator_CastFromInt(int pitch, string expected)
         {
             Assert.AreEqual(Pitch.Parse(expected), (Pitch) pitch);
         }
