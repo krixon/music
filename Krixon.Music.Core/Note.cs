@@ -21,5 +21,10 @@ namespace Krixon.Music.Core
                 Pitch.Parse(match.Groups[1].Value),
                 match.Groups[2].Length > 0 ? int.Parse(match.Groups[2].Value) : 4);
         }
+
+        public Note Transpose(int semitones)
+        {
+            return new Note(Pitch.Transpose(semitones), semitones / 12 + Octave);
+        }
     }
 }
