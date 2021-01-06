@@ -10,8 +10,9 @@ namespace Krixon.Music.Core
     /// </summary>
     public record Pitch(NoteLetter NoteLetter, int Accidentals)
     {
-        public Pitch(string str) : this(Parser.NoteLetter(str), Parser.Accidentals(str))
+        public static Pitch Parse(string str)
         {
+            return new Pitch(Parser.NoteLetter(str), Parser.Accidentals(str));
         }
 
         public static implicit operator int(Pitch pitch)

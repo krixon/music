@@ -41,30 +41,30 @@ namespace Krixon.Music.Core.Test
 
         [Test]
         [TestCaseSource(nameof(StringSource))]
-        public void Construct_FromString(string str, NoteLetter expectedNoteLetter, int expectedAccidentals)
+        public void Parse(string str, NoteLetter expectedNoteLetter, int expectedAccidentals)
         {
-            Assert.AreEqual(new Pitch(expectedNoteLetter, expectedAccidentals), new Pitch(str));
+            Assert.AreEqual(new Pitch(expectedNoteLetter, expectedAccidentals), Pitch.Parse(str));
         }
 
         [Test]
-        public void Construct_FromString_IgnoresCase()
+        public void Parse_IgnoresCase()
         {
-            Assert.AreEqual(new Pitch("A"), new Pitch("a"));
+            Assert.AreEqual(Pitch.Parse("A"), Pitch.Parse("a"));
         }
 
         [Test]
-        public void Construct_FromString_IgnoresWhitespace()
+        public void Parse_IgnoresWhitespace()
         {
-            Assert.AreEqual(new Pitch("A#"), new Pitch(" \tA   #\t\t\t"));
+            Assert.AreEqual(Pitch.Parse("A#"), Pitch.Parse(" \tA   #\t\t\t"));
         }
 
         [Test]
         [TestCase("")]
         [TestCase("H")]
         [TestCase("!")]
-        public void Construct_FromString_RejectsInvalidNoteLetter(string str)
+        public void Parse_RejectsInvalidNoteLetter(string str)
         {
-            var exception = Assert.Throws<ArgumentException>(() => new Pitch(str));
+            var exception = Assert.Throws<ArgumentException>(() => Pitch.Parse(str));
 
             Assert.That(exception.Message, Does.Contain("does not contain a valid note letter").IgnoreCase);
         }
@@ -76,9 +76,9 @@ namespace Krixon.Music.Core.Test
         [TestCase("C~")]
         [TestCase("C+")]
         [TestCase("C-")]
-        public void Construct_FromString_RejectsInvalidAccidental(string str)
+        public void Parse_RejectsInvalidAccidental(string str)
         {
-            var exception = Assert.Throws<ArgumentException>(() => new Pitch(str));
+            var exception = Assert.Throws<ArgumentException>(() => Pitch.Parse(str));
 
             Assert.That(exception.Message, Does.Contain("contains unknown accidental").IgnoreCase);
         }
@@ -134,7 +134,7 @@ namespace Krixon.Music.Core.Test
         [TestCase("Dbb", 0)]
         public void Operator_CastToInt(string pitch, int expected)
         {
-            Assert.AreEqual(expected, (int) new Pitch(pitch));
+            Assert.AreEqual(expected, (int) Pitch.Parse(pitch));
         }
 
         [Test]
@@ -152,7 +152,7 @@ namespace Krixon.Music.Core.Test
         [TestCase(11, "B")]
         public void Operator_CastFromInt(int pitch, string expected)
         {
-            Assert.AreEqual(expected, (Pitch) pitch);
+            Assert.AreEqual(Pitch.Parse(expected), (Pitch) pitch);
         }
     }
 }
