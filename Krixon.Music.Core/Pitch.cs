@@ -14,7 +14,7 @@ namespace Krixon.Music.Core
         {
         }
 
-        public static explicit operator int(Pitch pitch)
+        public static implicit operator int(Pitch pitch)
         {
             return (pitch.NoteLetter switch
             {
@@ -29,7 +29,7 @@ namespace Krixon.Music.Core
             } + pitch.Accidentals) % 12;
         }
 
-        public static explicit operator Pitch(int pitch)
+        public static implicit operator Pitch(int pitch)
         {
             return (pitch % 12) switch
             {
