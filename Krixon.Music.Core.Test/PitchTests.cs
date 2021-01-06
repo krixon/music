@@ -112,6 +112,18 @@ namespace Krixon.Music.Core.Test
         }
 
         [Test]
+        [TestCase(-12, "C")]
+        [TestCase(-11, "C#")]
+        [TestCase(-10, "D")]
+        [TestCase(-9, "D#")]
+        [TestCase(-8, "E")]
+        [TestCase(-7, "F")]
+        [TestCase(-6, "F#")]
+        [TestCase(-5, "G")]
+        [TestCase(-4, "G#")]
+        [TestCase(-3, "A")]
+        [TestCase(-2, "A#")]
+        [TestCase(-1, "B")]
         [TestCase(0, "C")]
         [TestCase(1, "C#")]
         [TestCase(2, "D")]
@@ -124,6 +136,7 @@ namespace Krixon.Music.Core.Test
         [TestCase(9, "A")]
         [TestCase(10, "A#")]
         [TestCase(11, "B")]
+        [TestCase(12, "C")]
         public static void Operator_CastFromInt(int pitch, string expected)
         {
             Assert.AreEqual(Pitch.Parse(expected), (Pitch) pitch);

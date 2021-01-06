@@ -32,7 +32,10 @@ namespace Krixon.Music.Core
 
         public static implicit operator Pitch(int pitch)
         {
-            return (pitch % 12) switch
+            pitch %= 12;
+            if (pitch < 0) pitch += 12;
+
+            return pitch switch
             {
                 0 => new Pitch(NoteLetter.C, 0),
                 1 => new Pitch(NoteLetter.C, 1),
