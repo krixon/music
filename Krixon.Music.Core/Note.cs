@@ -8,6 +8,9 @@ namespace Krixon.Music.Core
     /// </summary>
     public record Note(Pitch Pitch, int Octave)
     {
+        public NoteLetter NoteLetter => Pitch.NoteLetter;
+        public int Accidentals => Pitch.Accidentals;
+
         public static Note Parse(string str)
         {
             var match = Regex.Match(str, @"^(.+?)(\d*)?\s*$");
