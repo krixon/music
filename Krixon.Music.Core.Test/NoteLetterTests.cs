@@ -26,5 +26,20 @@ namespace Krixon.Music.Core.Test
         {
             Assert.AreEqual(expected, a.CountSemitonesTo(b));
         }
+
+        [Test]
+        [TestCase(NoteLetter.C, 0, NoteLetter.C)]
+        [TestCase(NoteLetter.C, 1, NoteLetter.D)]
+        [TestCase(NoteLetter.C, 2, NoteLetter.E)]
+        [TestCase(NoteLetter.C, 3, NoteLetter.F)]
+        [TestCase(NoteLetter.C, 4, NoteLetter.G)]
+        [TestCase(NoteLetter.C, 5, NoteLetter.A)]
+        [TestCase(NoteLetter.C, 6, NoteLetter.B)]
+        [TestCase(NoteLetter.C, 7, NoteLetter.C)]
+        [TestCase(NoteLetter.C, 8, NoteLetter.D)]
+        public static void Offset(NoteLetter start, int offset, NoteLetter expected)
+        {
+            Assert.AreEqual(expected, start.Offset(offset));
+        }
     }
 }

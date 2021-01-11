@@ -36,5 +36,18 @@ namespace Krixon.Music.Core
 
             return semitones;
         }
+
+        /// <summary>
+        /// Returns the note letter which is at a specified offset from this note letter.
+        /// For example, given A and 1, this would return B. Given A and 2, this would return C.
+        /// The offset wraps, so given A and 7 (or 14, 21, 28 etc), this would return A.
+        /// </summary>
+        /// <param name="a">The first note letter.</param>
+        /// <param name="offset">The offset from the first note letter.</param>
+        /// <returns></returns>
+        public static NoteLetter Offset(this NoteLetter a, int offset)
+        {
+            return (NoteLetter) (((int) a + offset) % 7);
+        }
     }
 }
