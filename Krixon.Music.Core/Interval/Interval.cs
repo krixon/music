@@ -6,9 +6,9 @@ namespace Krixon.Music.Core.Interval
         public Quality Quality { get; }
         public Number Number { get; }
 
-        private Interval(int semitoneCount, Quality quality, Number number)
+        private Interval(int semitoneCount, Quality quality, Number number, int octaves = 0)
         {
-            SemitoneCount = semitoneCount;
+            SemitoneCount = semitoneCount + 12 * octaves;
             Quality = quality;
             Number = number;
         }
@@ -29,7 +29,7 @@ namespace Krixon.Music.Core.Interval
 
         public override string ToString()
         {
-            return $"{base.ToString()}: {Quality} {Number}";
+            return $"{base.ToString()}: {Quality} {Number} ({SemitoneCount}st)";
         }
     }
 }
