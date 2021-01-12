@@ -49,5 +49,10 @@ namespace Krixon.Music.Core
         {
             return (NoteLetter) (((int) a + offset) % 7);
         }
+
+        public static NoteLetter Offset(this NoteLetter a, Interval.Interval offset)
+        {
+            return Offset(a, (int) offset.Number);
+        }
     }
 }

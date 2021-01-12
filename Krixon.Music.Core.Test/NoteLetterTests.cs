@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using NUnit.Framework;
+using static Krixon.Music.Core.Interval.Interval;
 
 namespace Krixon.Music.Core.Test
 {
@@ -37,9 +39,33 @@ namespace Krixon.Music.Core.Test
         [TestCase(NoteLetter.C, 6, NoteLetter.B)]
         [TestCase(NoteLetter.C, 7, NoteLetter.C)]
         [TestCase(NoteLetter.C, 8, NoteLetter.D)]
-        public static void Offset(NoteLetter start, int offset, NoteLetter expected)
+        public static void Offset_BySemitones(NoteLetter start, int offset, NoteLetter expected)
         {
             Assert.AreEqual(expected, start.Offset(offset));
+        }
+
+        public static IEnumerable<TestCaseData> OffsetByIntervalSource()
+        {
+            yield return new TestCaseData(NoteLetter.C, Unison(), NoteLetter.C);
+            yield return new TestCaseData(NoteLetter.C, MinorSecond(), NoteLetter.D);
+            yield return new TestCaseData(NoteLetter.C, MajorSecond(), NoteLetter.D);
+            yield return new TestCaseData(NoteLetter.C, MinorThird(), NoteLetter.E);
+            yield return new TestCaseData(NoteLetter.C, MajorThird(), NoteLetter.E);
+            yield return new TestCaseData(NoteLetter.C, PerfectFourth(), NoteLetter.F);
+            yield return new TestCaseData(NoteLetter.C, DiminishedFifth(), NoteLetter.G);
+            yield return new TestCaseData(NoteLetter.C, PerfectFifth(), NoteLetter.G);
+            yield return new TestCaseData(NoteLetter.C, MinorSixth(), NoteLetter.A);
+            yield return new TestCaseData(NoteLetter.C, MajorSixth(), NoteLetter.A);
+            yield return new TestCaseData(NoteLetter.C, MinorSeventh(), NoteLetter.B);
+            yield return new TestCaseData(NoteLetter.C, MajorSeventh(), NoteLetter.B);
+            yield return new TestCaseData(NoteLetter.C, Octave(), NoteLetter.C);
+        }
+
+        [Test]
+        [TestCaseSource(nameof(OffsetByIntervalSource))]
+        public static void Offset_ByInterval(NoteLetter start, Core.Interval.Interval interval, NoteLetter expected)
+        {
+            Assert.AreEqual(expected, start.Offset(interval));
         }
     }
 }
