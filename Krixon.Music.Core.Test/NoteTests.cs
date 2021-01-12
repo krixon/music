@@ -1,6 +1,7 @@
 using System.Collections.Generic;
+using Krixon.Music.Core.Intervals;
 using NUnit.Framework;
-using static Krixon.Music.Core.Interval.Interval;
+using static Krixon.Music.Core.Intervals.Interval;
 
 namespace Krixon.Music.Core.Test
 {
@@ -324,7 +325,7 @@ namespace Krixon.Music.Core.Test
 
         [Test]
         [TestCaseSource(nameof(TransposeSource))]
-        public static void Transpose(string start, Core.Interval.Interval interval, string expected)
+        public static void Transpose(string start, Interval interval, string expected)
         {
             Assert.AreEqual(Note.Parse(expected), Note.Parse(start).Transpose(interval));
         }

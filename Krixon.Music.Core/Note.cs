@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text.RegularExpressions;
+using Krixon.Music.Core.Intervals;
 
 namespace Krixon.Music.Core
 {
@@ -28,7 +29,7 @@ namespace Krixon.Music.Core
         /// <summary>
         /// Returns a new note by applying an interval to this note.
         /// </summary>
-        public Note Transpose(Interval.Interval interval)
+        public Note Transpose(Interval interval)
         {
             // Transpose with the assumption that we are in a scale and account for enharmonic equivalence.
             // First find the correct note letter based on the interval.

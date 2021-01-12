@@ -1,6 +1,7 @@
 using System.Collections.Generic;
+using Krixon.Music.Core.Intervals;
 using NUnit.Framework;
-using static Krixon.Music.Core.Interval.Interval;
+using static Krixon.Music.Core.Intervals.Interval;
 
 namespace Krixon.Music.Core.Test
 {
@@ -63,7 +64,7 @@ namespace Krixon.Music.Core.Test
 
         [Test]
         [TestCaseSource(nameof(OffsetByIntervalSource))]
-        public static void Offset_ByInterval(NoteLetter start, Core.Interval.Interval interval, NoteLetter expected)
+        public static void Offset_ByInterval(NoteLetter start, Interval interval, NoteLetter expected)
         {
             Assert.AreEqual(expected, start.Offset(interval));
         }

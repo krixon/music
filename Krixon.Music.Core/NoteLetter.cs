@@ -1,3 +1,5 @@
+using Krixon.Music.Core.Intervals;
+
 namespace Krixon.Music.Core
 {
     public enum NoteLetter
@@ -50,7 +52,7 @@ namespace Krixon.Music.Core
             return (NoteLetter) (((int) a + offset) % 7);
         }
 
-        public static NoteLetter Offset(this NoteLetter a, Interval.Interval offset)
+        public static NoteLetter Offset(this NoteLetter a, Interval offset)
         {
             return Offset(a, (int) offset.Number);
         }

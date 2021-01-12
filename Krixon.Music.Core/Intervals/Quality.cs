@@ -1,4 +1,4 @@
-namespace Krixon.Music.Core.Interval
+namespace Krixon.Music.Core.Intervals
 {
     public enum Quality
     {
