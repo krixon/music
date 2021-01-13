@@ -21,6 +21,7 @@ namespace Krixon.Music.Core.Intervals
         public static Interval MinorThird() => new(3, Quality.Minor, Number.Third);
         public static Interval MajorThird() => new(4, Quality.Major, Number.Third);
         public static Interval PerfectFourth() => new(5, Quality.Perfect, Number.Fourth);
+        public static Interval AugmentedFourth() => new(6, Quality.Augmented, Number.Fourth);
         public static Interval DiminishedFifth() => new(6, Quality.Diminished, Number.Fifth);
         public static Interval PerfectFifth() => new(7, Quality.Perfect, Number.Fifth);
         public static Interval MinorSixth() => new(8, Quality.Minor, Number.Sixth);
