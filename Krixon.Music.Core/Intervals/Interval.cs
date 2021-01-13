@@ -1,3 +1,5 @@
+using System;
+
 namespace Krixon.Music.Core.Intervals
 {
     public readonly struct Interval
@@ -26,6 +28,32 @@ namespace Krixon.Music.Core.Intervals
         public static Interval MinorSeventh() => new(10, Quality.Minor, Number.Seventh);
         public static Interval MajorSeventh() => new(11, Quality.Major, Number.Seventh);
         public static Interval Octave() => new (12, Quality.Perfect, Number.Octave);
+
+        public static Interval FromSemitoneCount(int semitoneCount)
+        {
+            var position = semitoneCount % 12;
+
+            // Ensure that Octave is used over Unison when spanning multiple octaves.
+            if (position == 0 && semitoneCount > 11) position = 12;
+
+            return position switch
+            {
+                0 => Unison(),
+                1 => MinorSecond(),
+                2 => MajorSecond(),
+                3 => MinorThird(),
+                4 => MajorThird(),
+                5 => PerfectFourth(),
+                6 => DiminishedFifth(),
+                7 => PerfectFifth(),
+                8 => MinorSixth(),
+                9 => MajorSixth(),
+                10 => MinorSeventh(),
+                11 => MajorSeventh(),
+                12 => Octave(),
+                _ => throw new ArgumentOutOfRangeException(nameof(semitoneCount), semitoneCount, null)
+            };
+        }
 
         public override string ToString()
         {
