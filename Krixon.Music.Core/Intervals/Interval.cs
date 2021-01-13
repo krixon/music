@@ -8,9 +8,9 @@ namespace Krixon.Music.Core.Intervals
         public Quality Quality { get; }
         public Number Number { get; }
 
-        private Interval(int semitoneCount, Quality quality, Number number, int octaves = 0)
+        private Interval(int semitoneCount, Quality quality, Number number)
         {
-            SemitoneCount = semitoneCount + 12 * octaves;
+            SemitoneCount = semitoneCount;
             Quality = quality;
             Number = number;
         }
