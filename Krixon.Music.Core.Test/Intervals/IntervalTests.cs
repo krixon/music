@@ -54,5 +54,13 @@ namespace Krixon.Music.Core.Test.Intervals
             Assert.AreEqual(expectedQuality, interval.Quality);
             Assert.AreEqual(expectedNumber, interval.Number);
         }
+
+        [Test]
+        public static void FromSemitoneCount_WithIncompatibleHint()
+        {
+            var exception = Assert.Throws<InvalidHintException>(() => Interval.FromSemitoneCount(1, Number.Fifth));
+
+            Assert.That(exception.Message, Does.Contain("incompatible with semitone count").IgnoreCase);
+        }
     }
 }

@@ -46,8 +46,8 @@ namespace Krixon.Music.Core.Intervals
         public static Interval MajorSeventh() => new(11, Quality.Major, Number.Seventh);
         public static Interval AugmentedSeventh() => new(12, Quality.Augmented, Number.Seventh);
 
-        public static Interval DiminishedOctave() => new (11, Quality.Diminished, Number.Octave);
-        public static Interval Octave() => new (12, Quality.Perfect, Number.Octave);
+        public static Interval DiminishedOctave() => new(11, Quality.Diminished, Number.Octave);
+        public static Interval Octave() => new(12, Quality.Perfect, Number.Octave);
 
         /// <summary>
         /// Creates a new interval based on a number of semitones.
@@ -56,8 +56,9 @@ namespace Krixon.Music.Core.Intervals
         /// <param name="number">
         /// A hint as to which interval number is sought. This can be used to resolve ambiguities
         /// since multiple intervals share a semitone count. If a number is specified which does not make
-        /// sense due to the semitone count, it is ignored.
+        /// sense due to the semitone count, an exception is thrown.
         /// </param>
+        /// <exception cref="InvalidHintException">If number is incompatible with semitoneCount</exception>
         public static Interval FromSemitoneCount(int semitoneCount, Number? number = null)
         {
             var position = semitoneCount % 12;
@@ -65,7 +66,7 @@ namespace Krixon.Music.Core.Intervals
             // Ensure that Octave is used over Unison when spanning multiple octaves.
             if (position == 0 && semitoneCount > 11) position = 12;
 
-            return position switch
+            var interval = position switch
             {
                 0 when number == Number.Second => DiminishedSecond(),
                 0 => Unison(),
@@ -93,8 +94,19 @@ namespace Krixon.Music.Core.Intervals
                 11 => MajorSeventh(),
                 12 when number == Number.Seventh => AugmentedSeventh(),
                 12 => Octave(),
-                _ => throw new ArgumentOutOfRangeException(nameof(semitoneCount), semitoneCount, null)
+                _ => throw new ArgumentOutOfRangeException(
+                    nameof(semitoneCount), semitoneCount, "Invalid semitone count.")
             };
+
+            if (number != null && interval.Number != number)
+            {
+                throw new InvalidHintException(
+                    $"Hinted number `{number}` is incompatible with semitone count `{semitoneCount}`.",
+                    nameof(number)
+                );
+            }
+
+            return interval;
         }
 
         public override string ToString()
