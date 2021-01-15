@@ -35,7 +35,7 @@ namespace Krixon.Music.Core.Scales
             return intervals.Select(tonic.Transpose).Prepend(tonic);
         }
 
-        public static Interval[] Diatonic(int mode, IDictionary<int, int>? adjustments = null)
+        private static Interval[] Diatonic(int mode, IDictionary<int, int>? adjustments = null)
         {
             // T-T-s-T-T-T-s
             var sequence = RotateSequence(new[] {2, 2, 1, 2, 2, 2, 1}, mode);
@@ -55,10 +55,10 @@ namespace Krixon.Music.Core.Scales
         }
 
         /// <summary>
-        /// Creates a adjustments dictionary which augments specific steps of the scale by a semitone.
+        /// Creates an adjustments dictionary which augments specific steps of the scale by a semitone.
         /// </summary>
         /// <param name="steps">The 1-based step in the scale to augment.</param>
-        public static Dictionary<int, int> Augment(params int[] steps) => steps.ToDictionary(s => s, _ => 1);
+        private static Dictionary<int, int> Augment(params int[] steps) => steps.ToDictionary(s => s, _ => 1);
 
         private static int[] RotateSequence(int[] sequence, int mode)
         {
