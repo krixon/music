@@ -2,7 +2,7 @@ using System;
 
 namespace Krixon.Music.Core.Intervals
 {
-    public readonly struct Interval
+    public sealed class Interval : IEquatable<Interval>
     {
         public int SemitoneCount { get; }
         public Quality Quality { get; }
@@ -109,9 +109,46 @@ namespace Krixon.Music.Core.Intervals
             return interval;
         }
 
+        public Interval Diminish()
+        {
+            if (Quality == Quality.Diminished || Number == Number.Unison && Quality == Quality.Perfect)
+            {
+                throw new InvalidOperationException($"Interval `{Quality} {Number}` cannot be diminished.");
+            }
+
+            return FromSemitoneCount(SemitoneCount - 1, Number);
+        }
+
+        public Interval Augment()
+        {
+            if (Quality == Quality.Augmented)
+            {
+                throw new InvalidOperationException($"Interval `{Quality} {Number}` cannot be augmented.");
+            }
+
+            return FromSemitoneCount(SemitoneCount + 1, Number);
+        }
+
         public override string ToString()
         {
             return $"{base.ToString()}: {Quality} {Number} ({SemitoneCount}st)";
+        }
+
+        public bool Equals(Interval? other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return SemitoneCount == other.SemitoneCount && Quality == other.Quality && Number == other.Number;
+        }
+
+        public override bool Equals(object? obj)
+        {
+            return ReferenceEquals(this, obj) || obj is Interval other && Equals(other);
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(SemitoneCount, (int) Quality, (int) Number);
         }
     }
 }

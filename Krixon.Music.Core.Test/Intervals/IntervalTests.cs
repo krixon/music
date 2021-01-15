@@ -1,5 +1,9 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using Krixon.Music.Core.Intervals;
 using NUnit.Framework;
+using static Krixon.Music.Core.Intervals.Interval;
 
 namespace Krixon.Music.Core.Test.Intervals
 {
@@ -61,6 +65,62 @@ namespace Krixon.Music.Core.Test.Intervals
             var exception = Assert.Throws<InvalidHintException>(() => Interval.FromSemitoneCount(1, Number.Fifth));
 
             Assert.That(exception.Message, Does.Contain("incompatible with semitone count").IgnoreCase);
+        }
+
+        public static IEnumerable<TestCaseData> AugmentationSource()
+        {
+            yield return new TestCaseData(Unison(), AugmentedUnison());
+            yield return new TestCaseData(DiminishedSecond(), MinorSecond());
+            yield return new TestCaseData(MinorSecond(), MajorSecond());
+            yield return new TestCaseData(MajorSecond(), AugmentedSecond());
+            yield return new TestCaseData(DiminishedThird(), MinorThird());
+            yield return new TestCaseData(MinorThird(), MajorThird());
+            yield return new TestCaseData(MajorThird(), AugmentedThird());
+            yield return new TestCaseData(DiminishedFourth(), PerfectFourth());
+            yield return new TestCaseData(PerfectFourth(), AugmentedFourth());
+            yield return new TestCaseData(DiminishedFifth(), PerfectFifth());
+            yield return new TestCaseData(PerfectFifth(), AugmentedFifth());
+            yield return new TestCaseData(DiminishedSixth(), MinorSixth());
+            yield return new TestCaseData(MinorSixth(), MajorSixth());
+            yield return new TestCaseData(DiminishedSeventh(), MinorSeventh());
+            yield return new TestCaseData(MinorSeventh(), MajorSeventh());
+            yield return new TestCaseData(MajorSeventh(), AugmentedSeventh());
+            yield return new TestCaseData(DiminishedOctave(), Octave());
+        }
+
+        [Test]
+        [TestCaseSource(nameof(AugmentationSource))]
+        public static void Augment(Interval start, Interval expected)
+        {
+            Assert.AreEqual(expected, start.Augment());
+        }
+
+        [Test]
+        public static void Augment_WithAugmented()
+        {
+            var exception = Assert.Throws<InvalidOperationException>(() => AugmentedUnison().Augment());
+
+            Assert.That(exception.Message, Does.Contain("cannot be augmented").IgnoreCase);
+        }
+
+        public static IEnumerable<TestCaseData> DiminutionSource()
+        {
+            return AugmentationSource().Select(data => new TestCaseData(data.Arguments[1], data.Arguments[0]));
+        }
+
+        [Test]
+        [TestCaseSource(nameof(DiminutionSource))]
+        public static void Diminish(Interval start, Interval expected)
+        {
+            Assert.AreEqual(expected, start.Diminish());
+        }
+
+        [Test]
+        public static void Augment_WithDiminished()
+        {
+            var exception = Assert.Throws<InvalidOperationException>(() => DiminishedSecond().Diminish());
+
+            Assert.That(exception.Message, Does.Contain("cannot be diminished").IgnoreCase);
         }
     }
 }
