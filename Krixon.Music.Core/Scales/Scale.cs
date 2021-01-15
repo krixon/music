@@ -22,6 +22,7 @@ namespace Krixon.Music.Core.Scales
         public static Scale Major(Note tonic) => Ionian(tonic);
         public static Scale Minor(Note tonic) => Aeolian(tonic);
         public static Scale HarmonicMinor(Note tonic) => new(tonic, Diatonic(6, Augment(7)));
+        public static Scale MelodicMinor(Note tonic) => new(tonic, Diatonic(6, Augment(6, 7)));
         public static Scale Ionian(Note tonic) => new(tonic, Diatonic(1));
         public static Scale Dorian(Note tonic) => new(tonic, Diatonic(2));
         public static Scale Phrygian(Note tonic) => new(tonic, Diatonic(3));

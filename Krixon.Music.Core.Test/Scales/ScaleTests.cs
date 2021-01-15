@@ -224,6 +224,33 @@ namespace Krixon.Music.Core.Test.Scales
             TestNotes(tonic, expected, Scale.HarmonicMinor);
         }
 
+        [Test]
+        [TestCase("Cb", new[] {"Cb", "Db", "Ebb", "Fb", "Gb", "Ab", "Bb"})]
+        [TestCase("C", new[] {"C", "D", "Eb", "F", "G", "A", "B"})]
+        [TestCase("C#", new[] {"C#", "D#", "E", "F#", "G#", "A#", "B#"})]
+        [TestCase("Db", new[] {"Db", "Eb", "Fb", "Gb", "Ab", "Bb", "C5"})]
+        [TestCase("D", new[] {"D", "E", "F", "G", "A", "B", "C#5"})]
+        [TestCase("D#", new[] {"D#", "E#", "F#", "G#", "A#", "B#", "C##5"})]
+        [TestCase("Eb", new[] {"Eb", "F", "Gb", "Ab", "Bb", "C5", "D5"})]
+        [TestCase("E", new[] {"E", "F#", "G", "A", "B", "C#5", "D#5"})]
+        [TestCase("E#", new[] {"E#", "F##", "G#", "A#", "B#", "C##5", "D##5"})]
+        [TestCase("Fb", new[] {"Fb", "Gb", "Abb", "Bbb", "Cb5", "Db5", "Eb5"})]
+        [TestCase("F", new[] {"F", "G", "Ab", "Bb", "C5", "D5", "E5"})]
+        [TestCase("F#", new[] {"F#", "G#", "A", "B", "C#5", "D#5", "E#5"})]
+        [TestCase("Gb", new[] {"Gb", "Ab", "Bbb", "Cb5", "Db5", "Eb5", "F5"})]
+        [TestCase("G", new[] {"G", "A", "Bb", "C5", "D5", "E5", "F#5"})]
+        [TestCase("G#", new[] {"G#", "A#", "B", "C#5", "D#5", "E#5", "F##5"})]
+        [TestCase("Ab", new[] {"Ab", "Bb", "Cb5", "Db5", "Eb5", "F5", "G5"})]
+        [TestCase("A", new[] {"A", "B", "C5", "D5", "E5", "F#5", "G#5"})]
+        [TestCase("A#", new[] {"A#", "B#", "C#5", "D#5", "E#5", "F##5", "G##5"})]
+        [TestCase("Bb", new[] {"Bb", "C5", "Db5", "Eb5", "F5", "G5", "A5"})]
+        [TestCase("B", new[] {"B", "C#5", "D5", "E5", "F#5", "G#5", "A#5"})]
+        [TestCase("B#", new[] {"B#", "C##5", "D#5", "E#5", "F##5", "G##5", "A##5"})]
+        public static void MelodicMinor(string tonic, string[] expected)
+        {
+            TestNotes(tonic, expected, Scale.MelodicMinor);
+        }
+
         private static void TestNotes(string tonic, string[] expected, Func<Note, Scale> ctor)
         {
             var scale = ctor(Note.Parse(tonic));
