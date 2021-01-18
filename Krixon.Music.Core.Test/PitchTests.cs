@@ -66,7 +66,7 @@ namespace Krixon.Music.Core.Test
         {
             var exception = Assert.Throws<ArgumentException>(() => Pitch.Parse(str));
 
-            Assert.That(exception.Message, Does.Contain("does not contain a valid note letter").IgnoreCase);
+            Assert.That(exception.Message, Does.Contain("not a valid pitch string").IgnoreCase);
         }
 
         [Test]
@@ -80,7 +80,7 @@ namespace Krixon.Music.Core.Test
         {
             var exception = Assert.Throws<ArgumentException>(() => Pitch.Parse(str));
 
-            Assert.That(exception.Message, Does.Contain("contains unknown accidental").IgnoreCase);
+            Assert.That(exception.Message, Does.Contain("not a valid pitch string").IgnoreCase);
         }
     }
 }
