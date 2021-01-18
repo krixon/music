@@ -109,6 +109,24 @@ namespace Krixon.Music.Core.Intervals
             return interval;
         }
 
+        /// <summary>
+        /// Adjust the interval by the specified number of semitones.
+        /// </summary>
+        /// <param name="semitones">
+        /// The number of semitones. If positive, the interval will be augmented, otherwise it will be diminished.
+        /// </param>
+        /// <returns></returns>
+        public Interval Adjust(int semitones)
+        {
+            if (semitones == 0) return this;
+
+            return semitones < 0 ? Diminish(semitones) : Augment(semitones);
+        }
+
+        /// <summary>
+        /// Diminish the interval by one semitone.
+        /// </summary>
+        /// <exception cref="InvalidOperationException">If the interval cannot be diminished.</exception>
         public Interval Diminish()
         {
             if (Quality == Quality.Diminished || Number == Number.Unison && Quality == Quality.Perfect)
@@ -119,6 +137,23 @@ namespace Krixon.Music.Core.Intervals
             return FromSemitoneCount(SemitoneCount - 1, Number);
         }
 
+        /// <summary>
+        /// Diminish the interval by a specified number of semitones.
+        /// </summary>
+        /// <exception cref="InvalidOperationException">If the interval cannot be diminished.</exception>
+        public Interval Diminish(int semitones)
+        {
+            var interval = this;
+
+            while (semitones++ < 0) interval = interval.Diminish();
+
+            return interval;
+        }
+
+        /// <summary>
+        /// Augment the interval by one semitone.
+        /// </summary>
+        /// <exception cref="InvalidOperationException">If the interval cannot be augmented.</exception>
         public Interval Augment()
         {
             if (Quality == Quality.Augmented)
@@ -127,6 +162,19 @@ namespace Krixon.Music.Core.Intervals
             }
 
             return FromSemitoneCount(SemitoneCount + 1, Number);
+        }
+
+        /// <summary>
+        /// Augment the interval by a specified number of semitones.
+        /// </summary>
+        /// <exception cref="InvalidOperationException">If the interval cannot be augmented.</exception>
+        public Interval Augment(int semitones)
+        {
+            var interval = (Interval) MemberwiseClone();
+
+            while (semitones-- > 0) interval = interval.Augment();
+
+            return interval;
         }
 
         public override string ToString()
