@@ -2,9 +2,10 @@ using System;
 
 namespace Krixon.Music.Core.Intervals
 {
-    public sealed class Interval : IEquatable<Interval>
+    public sealed class Interval : IEquatable<Interval>, IComparable<Interval>
     {
         public int SemitoneCount { get; }
+
         public Quality Quality { get; }
         public Number Number { get; }
 
@@ -138,19 +139,6 @@ namespace Krixon.Music.Core.Intervals
         }
 
         /// <summary>
-        /// Diminish the interval by a specified number of semitones.
-        /// </summary>
-        /// <exception cref="InvalidOperationException">If the interval cannot be diminished.</exception>
-        public Interval Diminish(int semitones)
-        {
-            var interval = this;
-
-            while (semitones++ < 0) interval = interval.Diminish();
-
-            return interval;
-        }
-
-        /// <summary>
         /// Augment the interval by one semitone.
         /// </summary>
         /// <exception cref="InvalidOperationException">If the interval cannot be augmented.</exception>
@@ -162,19 +150,6 @@ namespace Krixon.Music.Core.Intervals
             }
 
             return FromSemitoneCount(SemitoneCount + 1, Number);
-        }
-
-        /// <summary>
-        /// Augment the interval by a specified number of semitones.
-        /// </summary>
-        /// <exception cref="InvalidOperationException">If the interval cannot be augmented.</exception>
-        public Interval Augment(int semitones)
-        {
-            var interval = (Interval) MemberwiseClone();
-
-            while (semitones-- > 0) interval = interval.Augment();
-
-            return interval;
         }
 
         public override string ToString()
@@ -197,6 +172,43 @@ namespace Krixon.Music.Core.Intervals
         public override int GetHashCode()
         {
             return HashCode.Combine(SemitoneCount, (int) Quality, (int) Number);
+        }
+
+        public int CompareTo(Interval? other)
+        {
+            if (ReferenceEquals(this, other)) return 0;
+            if (ReferenceEquals(null, other)) return 1;
+
+            var numberComparison = Number.CompareTo(other.Number);
+            if (numberComparison != 0) return numberComparison;
+
+            return (SemitoneCount % 12).CompareTo(other.SemitoneCount % 12);
+        }
+
+        /// <summary>
+        /// Diminish the interval by a specified number of semitones.
+        /// </summary>
+        /// <exception cref="InvalidOperationException">If the interval cannot be diminished.</exception>
+        private Interval Diminish(int semitones)
+        {
+            var interval = this;
+
+            while (semitones++ < 0) interval = interval.Diminish();
+
+            return interval;
+        }
+
+        /// <summary>
+        /// Augment the interval by a specified number of semitones.
+        /// </summary>
+        /// <exception cref="InvalidOperationException">If the interval cannot be augmented.</exception>
+        private Interval Augment(int semitones)
+        {
+            var interval = (Interval) MemberwiseClone();
+
+            while (semitones-- > 0) interval = interval.Augment();
+
+            return interval;
         }
     }
 }

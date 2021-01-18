@@ -31,7 +31,7 @@ namespace Krixon.Music.Core.Scales
 
         public static Scale Major(Note tonic) => Ionian(tonic);
         public static Scale Minor(Note tonic) => Aeolian(tonic);
-        public static Scale HarmonicMinor(Note tonic) => new(tonic, Diatonic(6), Form.Augmented(7));
+        public static Scale HarmonicMinor(Note tonic) => new(tonic, Diatonic(6).Augment(7));
         public static Scale MelodicMinor(Note tonic) => new(tonic, Diatonic(6), Form.AugmentedAscending(6, 7));
         public static Scale Ionian(Note tonic) => new(tonic, Diatonic(1));
         public static Scale Dorian(Note tonic) => new(tonic, Diatonic(2));
@@ -40,8 +40,10 @@ namespace Krixon.Music.Core.Scales
         public static Scale Mixolydian(Note tonic) => new(tonic, Diatonic(5));
         public static Scale Aeolian(Note tonic) => new(tonic, Diatonic(6));
         public static Scale Locrian(Note tonic) => new(tonic, Diatonic(7));
-        public static Scale MajorPentatonic(Note tonic) => new(tonic, Diatonic(1).ExceptSteps(4, 7));
-        public static Scale MinorPentatonic(Note tonic) => new(tonic, Diatonic(6).ExceptSteps(2, 6));
+        public static Scale MajorPentatonic(Note tonic) => new(tonic, Diatonic(1).Remove(4, 7));
+        public static Scale MinorPentatonic(Note tonic) => new(tonic, Diatonic(6).Remove(2, 6));
+        public static Scale MajorBlues(Note tonic) => new(tonic, Diatonic(1).Remove(4, 7).Insert(Interval.MinorThird()));
+        public static Scale MinorBlues(Note tonic) => new(tonic, Diatonic(6).Remove(2, 6).Insert(Interval.AugmentedFourth()));
 
         private static IEnumerable<Note> CreateNotesFromIntervals(
             Note tonic, IEnumerable<Interval> intervals, Direction direction, Form? form)

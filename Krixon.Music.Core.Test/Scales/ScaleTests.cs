@@ -327,6 +327,60 @@ namespace Krixon.Music.Core.Test.Scales
         }
 
         [Test]
+        [TestCase("Cb", new[] {"Cb", "Db", "Ebb", "Eb", "Gb", "Ab"})]
+        [TestCase("C", new[] {"C", "D", "Eb", "E", "G", "A"})]
+        [TestCase("C#", new[] {"C#", "D#", "E", "E#", "G#", "A#"})]
+        [TestCase("Db", new[] {"Db", "Eb", "Fb", "F", "Ab", "Bb"})]
+        [TestCase("D", new[] {"D", "E", "F", "F#", "A", "B"})]
+        [TestCase("D#", new[] {"D#", "E#", "F#", "F##", "A#", "B#"})]
+        [TestCase("Eb", new[] {"Eb", "F", "Gb", "G", "Bb", "C5"})]
+        [TestCase("E", new[] {"E", "F#", "G", "G#", "B", "C#5"})]
+        [TestCase("E#", new[] {"E#", "F##", "G#", "G##", "B#", "C##5"})]
+        [TestCase("Fb", new[] {"Fb", "Gb", "Abb", "Ab", "Cb5", "Db5"})]
+        [TestCase("F", new[] {"F", "G", "Ab", "A", "C5", "D5"})]
+        [TestCase("F#", new[] {"F#", "G#", "A", "A#", "C#5", "D#5"})]
+        [TestCase("Gb", new[] {"Gb", "Ab", "Bbb", "Bb", "Db5", "Eb5"})]
+        [TestCase("G", new[] {"G", "A", "Bb", "B", "D5", "E5"})]
+        [TestCase("G#", new[] {"G#", "A#", "B", "B#", "D#5", "E#5"})]
+        [TestCase("Ab", new[] {"Ab", "Bb", "Cb5", "C5", "Eb5", "F5"})]
+        [TestCase("A", new[] {"A", "B", "C5", "C#5", "E5", "F#5"})]
+        [TestCase("A#", new[] {"A#", "B#", "C#5", "C##5", "E#5", "F##5"})]
+        [TestCase("Bb", new[] {"Bb", "C5", "Db5", "D5", "F5", "G5"})]
+        [TestCase("B", new[] {"B", "C#5", "D5", "D#5", "F#5", "G#5"})]
+        [TestCase("B#", new[] {"B#", "C##5", "D#5", "D##5", "F##5", "G##5"})]
+        public static void MajorBlues(string tonic, string[] expected)
+        {
+            TestNotes(tonic, expected, Scale.MajorBlues);
+        }
+
+        [Test]
+        [TestCase("Cb", new[] {"Cb", "Ebb", "Fb", "F", "Gb", "Bbb"})]
+        [TestCase("C", new[] {"C", "Eb", "F", "F#", "G", "Bb"})]
+        [TestCase("C#", new[] {"C#", "E", "F#", "F##", "G#", "B"})]
+        [TestCase("Db", new[] {"Db", "Fb", "Gb", "G", "Ab", "Cb5"})]
+        [TestCase("D", new[] {"D", "F", "G", "G#", "A", "C5"})]
+        [TestCase("D#", new[] {"D#", "F#", "G#", "G##", "A#", "C#5"})]
+        [TestCase("Eb", new[] {"Eb", "Gb", "Ab", "A", "Bb", "Db5"})]
+        [TestCase("E", new[] {"E", "G", "A", "A#", "B", "D5"})]
+        [TestCase("E#", new[] {"E#", "G#", "A#", "A##", "B#", "D#5"})]
+        [TestCase("Fb", new[] {"Fb", "Abb", "Bbb", "Bb", "Cb5", "Ebb5"})]
+        [TestCase("F", new[] {"F", "Ab", "Bb", "B", "C5", "Eb5"})]
+        [TestCase("F#", new[] {"F#", "A", "B", "B#", "C#5", "E5"})]
+        [TestCase("Gb", new[] {"Gb", "Bbb", "Cb5", "C5", "Db5", "Fb5"})]
+        [TestCase("G", new[] {"G", "Bb", "C5", "C#5", "D5", "F5"})]
+        [TestCase("G#", new[] {"G#", "B", "C#5", "C##5", "D#5", "F#5"})]
+        [TestCase("Ab", new[] {"Ab", "Cb5", "Db5", "D5", "Eb5", "Gb5"})]
+        [TestCase("A", new[] {"A", "C5", "D5", "D#5", "E5", "G5"})]
+        [TestCase("A#", new[] {"A#", "C#5", "D#5", "D##5", "E#5", "G#5"})]
+        [TestCase("Bb", new[] {"Bb", "Db5", "Eb5", "E5", "F5", "Ab5"})]
+        [TestCase("B", new[] {"B", "D5", "E5", "E#5", "F#5", "A5"})]
+        [TestCase("B#", new[] {"B#", "D#5", "E#5", "E##5", "F##5", "A#5"})]
+        public static void MinorBlues(string tonic, string[] expected)
+        {
+            TestNotes(tonic, expected, Scale.MinorBlues);
+        }
+
+        [Test]
         public static void AscendingNotes()
         {
             Assert.AreEqual(

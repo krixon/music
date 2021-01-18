@@ -25,19 +25,6 @@ namespace Krixon.Music.Core.Scales
             _direction = direction;
         }
 
-        /// <summary>
-        /// Defines a scale form with specified steps augmented when played in either direction.
-        /// </summary>
-        /// <param name="steps">The augmented steps. 1-based, i.e. the seventh step is 7.</param>
-        public static Form Augmented(params int[] steps) => new (StepsToNumbers(steps));
-
-        /// <summary>
-        /// Defines a scale form with specified steps augmented when played in a particular direction.
-        /// </summary>
-        /// <param name="direction">The direction in which the form applies.</param>
-        /// <param name="steps">The augmented steps. 1-based, i.e. the seventh step is 7.</param>
-        public static Form Augmented(Direction direction, params int[] steps) => new (StepsToNumbers(steps), direction);
-
         public static Form AugmentedAscending(params int[] steps) => Augmented(Direction.Ascending, steps);
 
         /// <summary>
@@ -62,9 +49,19 @@ namespace Krixon.Music.Core.Scales
             return interval.Adjust(semitones);
         }
 
-        private static Dictionary<Number, int> StepsToNumbers(IEnumerable<int> steps)
+        /// <summary>
+        /// Defines a scale form with specified steps augmented when played in a particular direction.
+        /// </summary>
+        /// <param name="direction">The direction in which the form applies.</param>
+        /// <param name="steps">The augmented steps. 1-based, i.e. the seventh step is 7.</param>
+        private static Form Augmented(Direction direction, params int[] steps)
         {
-            return steps.ToDictionary(s => (Number) s - 1, _ => 1);
+            return new(DefineAdjustments(steps, 1), direction);
+        }
+
+        private static Dictionary<Number, int> DefineAdjustments(IEnumerable<int> steps, int semitones)
+        {
+            return steps.ToDictionary(s => (Number) s - 1, _ => semitones);
         }
     }
 }
