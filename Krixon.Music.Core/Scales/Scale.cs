@@ -6,23 +6,33 @@ namespace Krixon.Music.Core.Scales
 {
     public readonly struct Scale
     {
-        public IEnumerable<Note> Notes { get; }
         public Note Tonic { get; }
+        public IEnumerable<Note> AscendingNotes { get; }
+        public IEnumerable<Note> DescendingNotes { get; }
 
-        public int Length => Notes.Count();
+        public int Length => AscendingNotes.Count();
 
         /// <param name="tonic">The root note of the scale.</param>
-        /// <param name="intervals">A list of intervals from the mode, in semitones, which define the notes in the scale.</param>
-        private Scale(Note tonic, IEnumerable<Interval> intervals)
+        /// <param name="intervals">
+        /// A list of intervals from the mode, in semitones, which define the notes in the scale.
+        /// </param>
+        /// <param name="form">
+        /// A scale form which adjusts the intervals when the scale is played in a particular direction.
+        /// </param>
+        private Scale(Note tonic, IEnumerable<Interval> intervals, Form? form = null)
         {
             Tonic = tonic;
-            Notes = CreateNotesFromIntervals(Tonic, intervals);
+
+            intervals = intervals as Interval[] ?? intervals.ToArray();
+
+            AscendingNotes = CreateNotesFromIntervals(Tonic, intervals, Direction.Ascending, form);
+            DescendingNotes = CreateNotesFromIntervals(Tonic, intervals, Direction.Descending, form);
         }
 
         public static Scale Major(Note tonic) => Ionian(tonic);
         public static Scale Minor(Note tonic) => Aeolian(tonic);
-        public static Scale HarmonicMinor(Note tonic) => new(tonic, Diatonic(6, Augment(7)));
-        public static Scale MelodicMinor(Note tonic) => new(tonic, Diatonic(6, Augment(6, 7)));
+        public static Scale HarmonicMinor(Note tonic) => new(tonic, Diatonic(6), Form.Augmented(7));
+        public static Scale MelodicMinor(Note tonic) => new(tonic, Diatonic(6), Form.AugmentedAscending(6, 7));
         public static Scale Ionian(Note tonic) => new(tonic, Diatonic(1));
         public static Scale Dorian(Note tonic) => new(tonic, Diatonic(2));
         public static Scale Phrygian(Note tonic) => new(tonic, Diatonic(3));
@@ -31,12 +41,17 @@ namespace Krixon.Music.Core.Scales
         public static Scale Aeolian(Note tonic) => new(tonic, Diatonic(6));
         public static Scale Locrian(Note tonic) => new(tonic, Diatonic(7));
 
-        private static IEnumerable<Note> CreateNotesFromIntervals(Note tonic, IEnumerable<Interval> intervals)
+        private static IEnumerable<Note> CreateNotesFromIntervals(
+            Note tonic, IEnumerable<Interval> intervals, Direction direction, Form? form)
         {
-            return intervals.Select(tonic.Transpose).Prepend(tonic);
+            if (form != null) intervals = form.Apply(intervals, direction);
+
+            var notes = intervals.Select(tonic.Transpose).Prepend(tonic);
+
+            return direction == Direction.Descending ? notes.Reverse() : notes;
         }
 
-        private static Interval[] Diatonic(int mode, IDictionary<int, int>? adjustments = null)
+        private static IEnumerable<Interval> Diatonic(int mode)
         {
             // T-T-s-T-T-T-s
             var sequence = RotateSequence(new[] {2, 2, 1, 2, 2, 2, 1}, mode);
@@ -45,29 +60,20 @@ namespace Krixon.Music.Core.Scales
 
             for (var i = 0; i < 6; i++)
             {
-                // If step n is to be augmented or diminished, the interval n-1 must be adjusted accordingly.
-                var adjustment = adjustments?.ContainsKey(i + 2) ?? false ? adjustments[i + 2] : 0;
-
                 semitones += sequence[i];
-                intervals[i] = Interval.FromSemitoneCount(semitones + adjustment, (Number) i + 1);
+                intervals[i] = Interval.FromSemitoneCount(semitones, (Number) i + 1);
             }
 
             return intervals;
         }
 
-        /// <summary>
-        /// Creates an adjustments dictionary which augments specific steps of the scale by a semitone.
-        /// </summary>
-        /// <param name="steps">The 1-based step in the scale to augment.</param>
-        private static Dictionary<int, int> Augment(params int[] steps) => steps.ToDictionary(s => s, _ => 1);
-
-        private static int[] RotateSequence(int[] sequence, int mode)
+        private static int[] RotateSequence(IReadOnlyList<int> sequence, int mode)
         {
-            var result = new int[sequence.Length];
+            var result = new int[sequence.Count];
 
-            for (var i = 0; i < sequence.Length; i++)
+            for (var i = 0; i < sequence.Count; i++)
             {
-                result[i] = sequence[(i + mode - 1) % sequence.Length];
+                result[i] = sequence[(i + mode - 1) % sequence.Count];
             }
 
             return result;

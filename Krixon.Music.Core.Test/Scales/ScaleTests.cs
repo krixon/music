@@ -225,42 +225,80 @@ namespace Krixon.Music.Core.Test.Scales
         }
 
         [Test]
-        [TestCase("Cb", new[] {"Cb", "Db", "Ebb", "Fb", "Gb", "Ab", "Bb"})]
-        [TestCase("C", new[] {"C", "D", "Eb", "F", "G", "A", "B"})]
-        [TestCase("C#", new[] {"C#", "D#", "E", "F#", "G#", "A#", "B#"})]
-        [TestCase("Db", new[] {"Db", "Eb", "Fb", "Gb", "Ab", "Bb", "C5"})]
-        [TestCase("D", new[] {"D", "E", "F", "G", "A", "B", "C#5"})]
-        [TestCase("D#", new[] {"D#", "E#", "F#", "G#", "A#", "B#", "C##5"})]
-        [TestCase("Eb", new[] {"Eb", "F", "Gb", "Ab", "Bb", "C5", "D5"})]
-        [TestCase("E", new[] {"E", "F#", "G", "A", "B", "C#5", "D#5"})]
-        [TestCase("E#", new[] {"E#", "F##", "G#", "A#", "B#", "C##5", "D##5"})]
-        [TestCase("Fb", new[] {"Fb", "Gb", "Abb", "Bbb", "Cb5", "Db5", "Eb5"})]
-        [TestCase("F", new[] {"F", "G", "Ab", "Bb", "C5", "D5", "E5"})]
-        [TestCase("F#", new[] {"F#", "G#", "A", "B", "C#5", "D#5", "E#5"})]
-        [TestCase("Gb", new[] {"Gb", "Ab", "Bbb", "Cb5", "Db5", "Eb5", "F5"})]
-        [TestCase("G", new[] {"G", "A", "Bb", "C5", "D5", "E5", "F#5"})]
-        [TestCase("G#", new[] {"G#", "A#", "B", "C#5", "D#5", "E#5", "F##5"})]
-        [TestCase("Ab", new[] {"Ab", "Bb", "Cb5", "Db5", "Eb5", "F5", "G5"})]
-        [TestCase("A", new[] {"A", "B", "C5", "D5", "E5", "F#5", "G#5"})]
-        [TestCase("A#", new[] {"A#", "B#", "C#5", "D#5", "E#5", "F##5", "G##5"})]
-        [TestCase("Bb", new[] {"Bb", "C5", "Db5", "Eb5", "F5", "G5", "A5"})]
-        [TestCase("B", new[] {"B", "C#5", "D5", "E5", "F#5", "G#5", "A#5"})]
-        [TestCase("B#", new[] {"B#", "C##5", "D#5", "E#5", "F##5", "G##5", "A##5"})]
-        public static void MelodicMinor(string tonic, string[] expected)
+        [TestCase("Cb", Direction.Ascending, new[] {"Cb", "Db", "Ebb", "Fb", "Gb", "Ab", "Bb"})]
+        [TestCase("Cb", Direction.Descending, new[] {"Bbb", "Abb", "Gb", "Fb", "Ebb", "Db", "Cb"})]
+        [TestCase("C", Direction.Ascending, new[] {"C", "D", "Eb", "F", "G", "A", "B"})]
+        [TestCase("C", Direction.Descending, new[] {"Bb", "Ab", "G", "F", "Eb", "D", "C"})]
+        [TestCase("C#", Direction.Ascending, new[] {"C#", "D#", "E", "F#", "G#", "A#", "B#"})]
+        [TestCase("C#", Direction.Descending, new[] {"B", "A", "G#", "F#", "E", "D#", "C#"})]
+        [TestCase("Db", Direction.Ascending, new[] {"Db", "Eb", "Fb", "Gb", "Ab", "Bb", "C5"})]
+        [TestCase("Db", Direction.Descending, new[] {"Cb5", "Bbb", "Ab", "Gb", "Fb", "Eb", "Db"})]
+        [TestCase("D", Direction.Ascending, new[] {"D", "E", "F", "G", "A", "B", "C#5"})]
+        [TestCase("D", Direction.Descending, new[] {"C5", "Bb", "A", "G", "F", "E", "D"})]
+        [TestCase("D#", Direction.Ascending, new[] {"D#", "E#", "F#", "G#", "A#", "B#", "C##5"})]
+        [TestCase("D#", Direction.Descending, new[] {"C#5", "B", "A#", "G#", "F#", "E#", "D#"})]
+        [TestCase("Eb", Direction.Ascending, new[] {"Eb", "F", "Gb", "Ab", "Bb", "C5", "D5"})]
+        [TestCase("Eb", Direction.Descending, new[] {"Db5", "Cb5", "Bb", "Ab", "Gb", "F", "Eb"})]
+        [TestCase("E", Direction.Ascending, new[] {"E", "F#", "G", "A", "B", "C#5", "D#5"})]
+        [TestCase("E", Direction.Descending, new[] {"D5", "C5", "B", "A", "G", "F#", "E"})]
+        [TestCase("E#", Direction.Ascending, new[] {"E#", "F##", "G#", "A#", "B#", "C##5", "D##5"})]
+        [TestCase("E#", Direction.Descending, new[] {"D#5", "C#5", "B#", "A#", "G#", "F##", "E#"})]
+        [TestCase("Fb", Direction.Ascending, new[] {"Fb", "Gb", "Abb", "Bbb", "Cb5", "Db5", "Eb5"})]
+        [TestCase("Fb", Direction.Descending, new[] {"Ebb5", "Dbb5", "Cb5", "Bbb", "Abb", "Gb", "Fb"})]
+        [TestCase("F", Direction.Ascending, new[] {"F", "G", "Ab", "Bb", "C5", "D5", "E5"})]
+        [TestCase("F", Direction.Descending, new[] {"Eb5", "Db5", "C5", "Bb", "Ab", "G", "F"})]
+        [TestCase("F#", Direction.Ascending, new[] {"F#", "G#", "A", "B", "C#5", "D#5", "E#5"})]
+        [TestCase("F#", Direction.Descending, new[] {"E5", "D5", "C#5", "B", "A", "G#", "F#"})]
+        [TestCase("Gb", Direction.Ascending, new[] {"Gb", "Ab", "Bbb", "Cb5", "Db5", "Eb5", "F5"})]
+        [TestCase("Gb", Direction.Descending, new[] {"Fb5", "Ebb5", "Db5", "Cb5", "Bbb", "Ab", "Gb"})]
+        [TestCase("G", Direction.Ascending, new[] {"G", "A", "Bb", "C5", "D5", "E5", "F#5"})]
+        [TestCase("G", Direction.Descending, new[] {"F5", "Eb5", "D5", "C5", "Bb", "A", "G"})]
+        [TestCase("G#", Direction.Ascending, new[] {"G#", "A#", "B", "C#5", "D#5", "E#5", "F##5"})]
+        [TestCase("G#", Direction.Descending, new[] {"F#5", "E5", "D#5", "C#5", "B", "A#", "G#"})]
+        [TestCase("Ab", Direction.Ascending, new[] {"Ab", "Bb", "Cb5", "Db5", "Eb5", "F5", "G5"})]
+        [TestCase("Ab", Direction.Descending, new[] {"Gb5", "Fb5", "Eb5", "Db5", "Cb5", "Bb", "Ab"})]
+        [TestCase("A", Direction.Ascending, new[] {"A", "B", "C5", "D5", "E5", "F#5", "G#5"})]
+        [TestCase("A", Direction.Descending, new[] {"G5", "F5", "E5", "D5", "C5", "B", "A"})]
+        [TestCase("A#", Direction.Ascending, new[] {"A#", "B#", "C#5", "D#5", "E#5", "F##5", "G##5"})]
+        [TestCase("A#", Direction.Descending, new[] {"G#5", "F#5", "E#5", "D#5", "C#5", "B#", "A#"})]
+        [TestCase("Bb", Direction.Ascending, new[] {"Bb", "C5", "Db5", "Eb5", "F5", "G5", "A5"})]
+        [TestCase("Bb", Direction.Descending, new[] {"Ab5", "Gb5", "F5", "Eb5", "Db5", "C5", "Bb"})]
+        [TestCase("B", Direction.Ascending, new[] {"B", "C#5", "D5", "E5", "F#5", "G#5", "A#5"})]
+        [TestCase("B", Direction.Descending, new[] {"A5", "G5", "F#5", "E5", "D5", "C#5", "B"})]
+        [TestCase("B#", Direction.Ascending, new[] {"B#", "C##5", "D#5", "E#5", "F##5", "G##5", "A##5"})]
+        [TestCase("B#", Direction.Descending, new[] {"A#5", "G#5", "F##5", "E#5", "D#5", "C##5", "B#"})]
+        public static void MelodicMinor(string tonic, Direction direction, string[] expected)
         {
-            TestNotes(tonic, expected, Scale.MelodicMinor);
+            TestNotes(tonic, expected, Scale.MelodicMinor, direction);
         }
 
-        private static void TestNotes(string tonic, string[] expected, Func<Note, Scale> ctor)
+        public static void AscendingNotes()
+        {
+            Assert.AreEqual(
+                new [] {"C", "D", "E", "F", "G", "A", "B"}.Select(Note.Parse),
+                Scale.Major(Note.Parse("C")).AscendingNotes
+            );
+        }
+
+        public static void DescendingNotes()
+        {
+            Assert.AreEqual(
+                new [] {"B", "A", "G", "F", "E", "D", "C"}.Select(Note.Parse),
+                Scale.Major(Note.Parse("C")).DescendingNotes
+            );
+        }
+
+        private static void TestNotes(
+            string tonic, string[] expected, Func<Note, Scale> ctor, Direction? direction = null)
         {
             var scale = ctor(Note.Parse(tonic));
-            var notes = scale.Notes.ToArray();
+            var notes = (direction == Direction.Descending ? scale.DescendingNotes : scale.AscendingNotes).ToArray();
 
             Assert.AreEqual(expected.Length, scale.Length);
 
             for (var i = 0; i < expected.Length; i++)
             {
-                Assert.AreEqual(notes[i], Note.Parse(expected[i]));
+                Assert.AreEqual(Note.Parse(expected[i]), notes[i]);
             }
         }
     }

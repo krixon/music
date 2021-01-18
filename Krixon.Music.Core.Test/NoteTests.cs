@@ -49,6 +49,7 @@ namespace Krixon.Music.Core.Test
             yield return new TestCaseData("F3", Unison(), "F3");
             yield return new TestCaseData("F#3", Unison(), "F#3");
             yield return new TestCaseData("Gb3", Unison(), "Gb3");
+
             yield return new TestCaseData("G3", Unison(), "G3");
             yield return new TestCaseData("G#3", Unison(), "G#3");
             yield return new TestCaseData("Ab3", Unison(), "Ab3");
