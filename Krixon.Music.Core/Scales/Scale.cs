@@ -40,6 +40,8 @@ namespace Krixon.Music.Core.Scales
         public static Scale Mixolydian(Note tonic) => new(tonic, Diatonic(5));
         public static Scale Aeolian(Note tonic) => new(tonic, Diatonic(6));
         public static Scale Locrian(Note tonic) => new(tonic, Diatonic(7));
+        public static Scale MajorPentatonic(Note tonic) => new(tonic, Diatonic(1).ExceptSteps(4, 7));
+        public static Scale MinorPentatonic(Note tonic) => new(tonic, Diatonic(6).ExceptSteps(2, 6));
 
         private static IEnumerable<Note> CreateNotesFromIntervals(
             Note tonic, IEnumerable<Interval> intervals, Direction direction, Form? form)

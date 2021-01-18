@@ -272,6 +272,61 @@ namespace Krixon.Music.Core.Test.Scales
             TestNotes(tonic, expected, Scale.MelodicMinor, direction);
         }
 
+        [Test]
+        [TestCase("Cb", new[] {"Cb", "Db", "Eb", "Gb", "Ab"})]
+        [TestCase("C", new[] {"C", "D", "E", "G", "A"})]
+        [TestCase("C#", new[] {"C#", "D#", "E#", "G#", "A#"})]
+        [TestCase("Db", new[] {"Db", "Eb", "F", "Ab", "Bb"})]
+        [TestCase("D", new[] {"D", "E", "F#", "A", "B"})]
+        [TestCase("D#", new[] {"D#", "E#", "F##", "A#", "B#"})]
+        [TestCase("Eb", new[] {"Eb", "F", "G", "Bb", "C5"})]
+        [TestCase("E", new[] {"E", "F#", "G#", "B", "C#5"})]
+        [TestCase("E#", new[] {"E#", "F##", "G##", "B#", "C##5"})]
+        [TestCase("Fb", new[] {"Fb", "Gb", "Ab", "Cb5", "Db5"})]
+        [TestCase("F", new[] {"F", "G", "A", "C5", "D5"})]
+        [TestCase("F#", new[] {"F#", "G#", "A#", "C#5", "D#5"})]
+        [TestCase("Gb", new[] {"Gb", "Ab", "Bb", "Db5", "Eb5"})]
+        [TestCase("G", new[] {"G", "A", "B", "D5", "E5"})]
+        [TestCase("G#", new[] {"G#", "A#", "B#", "D#5", "E#5"})]
+        [TestCase("Ab", new[] {"Ab", "Bb", "C5", "Eb5", "F5"})]
+        [TestCase("A", new[] {"A", "B", "C#5", "E5", "F#5"})]
+        [TestCase("A#", new[] {"A#", "B#", "C##5", "E#5", "F##5"})]
+        [TestCase("Bb", new[] {"Bb", "C5", "D5", "F5", "G5"})]
+        [TestCase("B", new[] {"B", "C#5", "D#5", "F#5", "G#5"})]
+        [TestCase("B#", new[] {"B#", "C##5", "D##5", "F##5", "G##5"})]
+        public static void MajorPentatonic(string tonic, string[] expected)
+        {
+            TestNotes(tonic, expected, Scale.MajorPentatonic);
+        }
+
+        [Test]
+        [TestCase("Cb", new[] {"Cb", "Ebb", "Fb", "Gb", "Bbb"})]
+        [TestCase("C", new[] {"C", "Eb", "F", "G", "Bb"})]
+        [TestCase("C#", new[] {"C#", "E", "F#", "G#", "B"})]
+        [TestCase("Db", new[] {"Db", "Fb", "Gb", "Ab", "Cb5"})]
+        [TestCase("D", new[] {"D", "F", "G", "A", "C5"})]
+        [TestCase("D#", new[] {"D#", "F#", "G#", "A#", "C#5"})]
+        [TestCase("Eb", new[] {"Eb", "Gb", "Ab", "Bb", "Db5"})]
+        [TestCase("E", new[] {"E", "G", "A", "B", "D5"})]
+        [TestCase("E#", new[] {"E#", "G#", "A#", "B#", "D#5"})]
+        [TestCase("Fb", new[] {"Fb", "Abb", "Bbb", "Cb5", "Ebb5"})]
+        [TestCase("F", new[] {"F", "Ab", "Bb", "C5", "Eb5"})]
+        [TestCase("F#", new[] {"F#", "A", "B", "C#5", "E5"})]
+        [TestCase("Gb", new[] {"Gb", "Bbb", "Cb5", "Db5", "Fb5"})]
+        [TestCase("G", new[] {"G", "Bb", "C5", "D5", "F5"})]
+        [TestCase("G#", new[] {"G#", "B", "C#5", "D#5", "F#5"})]
+        [TestCase("Ab", new[] {"Ab", "Cb5", "Db5", "Eb5", "Gb5"})]
+        [TestCase("A", new[] {"A", "C5", "D5", "E5", "G5"})]
+        [TestCase("A#", new[] {"A#", "C#5", "D#5", "E#5", "G#5"})]
+        [TestCase("Bb", new[] {"Bb", "Db5", "Eb5", "F5", "Ab5"})]
+        [TestCase("B", new[] {"B", "D5", "E5", "F#5", "A5"})]
+        [TestCase("B#", new[] {"B#", "D#5", "E#5", "F##5", "A#5"})]
+        public static void MinorPentatonic(string tonic, string[] expected)
+        {
+            TestNotes(tonic, expected, Scale.MinorPentatonic);
+        }
+
+        [Test]
         public static void AscendingNotes()
         {
             Assert.AreEqual(
@@ -280,6 +335,7 @@ namespace Krixon.Music.Core.Test.Scales
             );
         }
 
+        [Test]
         public static void DescendingNotes()
         {
             Assert.AreEqual(
