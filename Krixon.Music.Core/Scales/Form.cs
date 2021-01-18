@@ -5,30 +5,33 @@ using Krixon.Music.Core.Intervals;
 namespace Krixon.Music.Core.Scales
 {
     /// <summary>
-    /// A particular scale form based on its direction.
+    /// Augments or diminishes a scale's intervals based on the direction in which it is played.
     /// </summary>
     public sealed class Form
     {
-        private readonly Direction? _direction;
+        private readonly Direction _direction;
         private readonly IDictionary<Number, int> _adjustments;
 
+        /// <param name="direction">The direction in which the form applies.</param>
         /// <param name="adjustments">
         /// A mapping of interval number to adjustment in semitones. Negative semitone values diminish
         /// while positive values augment.
         /// </param>
-        /// <param name="direction">
-        /// The direction in which the form applies. If not specified, it applies in either direction.
-        /// </param>
-        private Form(IDictionary<Number, int> adjustments, Direction? direction = null)
+        private Form(Direction direction, IDictionary<Number, int> adjustments)
         {
             _adjustments = adjustments;
             _direction = direction;
         }
 
+        /// <summary>
+        /// Create a scale form which augments specified steps when played ascending.
+        /// </summary>
+        /// <param name="steps">The steps of the scale to augment. 1-based, i.e. the seventh step is 7.</param>
+        /// <returns></returns>
         public static Form AugmentedAscending(params int[] steps) => Augmented(Direction.Ascending, steps);
 
         /// <summary>
-        /// Given a set of intervals and a scale direction, returns a new set of intervals which any necessary
+        /// Given a set of intervals and a scale direction, produce a new set of intervals which any necessary
         /// augmentations and diminutions applied.
         /// </summary>
         /// <param name="original">The original set of intervals which form a scale.</param>
@@ -36,14 +39,13 @@ namespace Krixon.Music.Core.Scales
         /// <returns></returns>
         public IEnumerable<Interval> Apply(IEnumerable<Interval> original, Direction direction)
         {
-            return _direction == null || direction == _direction ? original.Select(Adjust) : original;
+            return direction == _direction ? original.Select(Adjust) : original;
         }
 
         private Interval Adjust(Interval interval)
         {
             // Look up the adjustment in semitones for this interval.
             // Defaults to 0 causing the interval to be unchanged.
-            // Negative values will diminish while positive will augment.
             _adjustments.TryGetValue(interval.Number, out var semitones);
 
             return interval.Adjust(semitones);
@@ -56,7 +58,7 @@ namespace Krixon.Music.Core.Scales
         /// <param name="steps">The augmented steps. 1-based, i.e. the seventh step is 7.</param>
         private static Form Augmented(Direction direction, params int[] steps)
         {
-            return new(DefineAdjustments(steps, 1), direction);
+            return new(direction, DefineAdjustments(steps, 1));
         }
 
         private static Dictionary<Number, int> DefineAdjustments(IEnumerable<int> steps, int semitones)
