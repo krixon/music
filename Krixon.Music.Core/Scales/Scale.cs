@@ -4,7 +4,7 @@ using Krixon.Music.Core.Intervals;
 
 namespace Krixon.Music.Core.Scales
 {
-    public readonly struct Scale
+    public sealed class Scale
     {
         public Note Tonic { get; }
         public IEnumerable<Note> AscendingNotes { get; }
