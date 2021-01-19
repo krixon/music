@@ -11,6 +11,42 @@ namespace Krixon.Music.Core.Test.Intervals
     public class IntervalTests
     {
         [Test]
+        [TestCase("P1", 0, Quality.Perfect, Number.Unison)]
+        [TestCase("A1", 1, Quality.Augmented, Number.Unison)]
+        [TestCase("d2", 0, Quality.Diminished, Number.Second)]
+        [TestCase("m2", 1, Quality.Minor, Number.Second)]
+        [TestCase("M2", 2, Quality.Major, Number.Second)]
+        [TestCase("A2", 3, Quality.Augmented, Number.Second)]
+        [TestCase("d3", 2, Quality.Diminished, Number.Third)]
+        [TestCase("m3", 3, Quality.Minor, Number.Third)]
+        [TestCase("M3", 4, Quality.Major, Number.Third)]
+        [TestCase("A3", 5, Quality.Augmented, Number.Third)]
+        [TestCase("m9", 13, Quality.Minor, Number.Second)]
+        [TestCase("A8", 13, Quality.Augmented, Number.Octave)]
+        [TestCase("M9", 14, Quality.Major, Number.Second)]
+        [TestCase("d10", 14, Quality.Diminished, Number.Third)]
+        [TestCase("m10", 15, Quality.Minor, Number.Third)]
+        [TestCase("M10", 16, Quality.Major, Number.Third)]
+        [TestCase("A10", 17, Quality.Augmented, Number.Third)]
+        [TestCase("d11", 16, Quality.Diminished, Number.Fourth)]
+        [TestCase("P11", 17, Quality.Perfect, Number.Fourth)]
+        [TestCase("A11", 18, Quality.Augmented, Number.Fourth)]
+        [TestCase("d12", 18, Quality.Diminished, Number.Fifth)]
+        [TestCase("P12", 19, Quality.Perfect, Number.Fifth)]
+        [TestCase("m13", 20, Quality.Minor, Number.Sixth)]
+        [TestCase("P15", 24, Quality.Perfect, Number.Octave)]
+        [TestCase("M17", 28, Quality.Major, Number.Third)]
+        [TestCase("P22", 36, Quality.Perfect, Number.Octave)]
+        public void Parse(string str, int expectedSemitones, Quality expectedQuality, Number expectedNumber)
+        {
+            var interval = Interval.Parse(str);
+
+            Assert.AreEqual(expectedSemitones, interval.SemitoneCount);
+            Assert.AreEqual(expectedQuality, interval.Quality);
+            Assert.AreEqual(expectedNumber, interval.Number);
+        }
+
+        [Test]
         [TestCase(0, null, Quality.Perfect, Number.Unison)]
         [TestCase(0, Number.Second, Quality.Diminished, Number.Second)]
         [TestCase(1, null, Quality.Minor, Number.Second)]

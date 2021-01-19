@@ -1,13 +1,46 @@
 using System;
+using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 namespace Krixon.Music.Core.Intervals
 {
     public sealed class Interval : IEquatable<Interval>, IComparable<Interval>
     {
         public int SemitoneCount { get; }
-
         public Quality Quality { get; }
         public Number Number { get; }
+
+        private static readonly Dictionary<(Quality, Number), int> SemitoneCounts = new()
+        {
+            [(Quality.Perfect, Number.Unison)] = 0,
+            [(Quality.Augmented, Number.Unison)] = 1,
+            [(Quality.Diminished, Number.Second)] = 0,
+            [(Quality.Minor, Number.Second)] = 1,
+            [(Quality.Major, Number.Second)] = 2,
+            [(Quality.Augmented, Number.Second)] = 3,
+            [(Quality.Diminished, Number.Third)] = 2,
+            [(Quality.Minor, Number.Third)] = 3,
+            [(Quality.Major, Number.Third)] = 4,
+            [(Quality.Augmented, Number.Third)] = 5,
+            [(Quality.Diminished, Number.Fourth)] = 4,
+            [(Quality.Perfect, Number.Fourth)] = 5,
+            [(Quality.Augmented, Number.Fourth)] = 6,
+            [(Quality.Diminished, Number.Fifth)] = 6,
+            [(Quality.Perfect, Number.Fifth)] = 7,
+            [(Quality.Augmented, Number.Fifth)] = 8,
+            [(Quality.Diminished, Number.Sixth)] = 7,
+            [(Quality.Minor, Number.Sixth)] = 8,
+            [(Quality.Major, Number.Sixth)] = 9,
+            [(Quality.Augmented, Number.Sixth)] = 10,
+            [(Quality.Diminished, Number.Seventh)] = 9,
+            [(Quality.Minor, Number.Seventh)] = 10,
+            [(Quality.Major, Number.Seventh)] = 11,
+            [(Quality.Augmented, Number.Seventh)] = 12,
+            [(Quality.Diminished, Number.Octave)] = 11,
+            [(Quality.Perfect, Number.Octave)] = 12,
+            [(Quality.Augmented, Number.Octave)] = 13,
+
+        };
 
         private Interval(int semitoneCount, Quality quality, Number number)
         {
@@ -49,6 +82,42 @@ namespace Krixon.Music.Core.Intervals
 
         public static Interval DiminishedOctave() => new(11, Quality.Diminished, Number.Octave);
         public static Interval Octave() => new(12, Quality.Perfect, Number.Octave);
+
+        public static Interval Parse(string str)
+        {
+            var match = Regex.Match(
+                str, @"^\s*(?<quality>[a-z]+)\s*(?<number>\d+)\s*$", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
+            if (!match.Success)
+            {
+                throw new ArgumentException($"Interval `{str}` is not a valid interval string.");
+            }
+
+            var position = int.Parse(match.Groups["number"].Value);
+            var semitones = position / 7 * 12;
+            var number = (Number) ((position - 1) % 7);
+
+            if (number == Number.Unison && position > 7)
+            {
+                number = Number.Octave;
+                semitones -= 12;
+            }
+
+            var quality = match.Groups["quality"].Value switch
+            {
+                "P" or "perf" => Quality.Perfect,
+                "m" or "min" => Quality.Minor,
+                "M" or "maj" => Quality.Major,
+                "d" or "dim" => Quality.Diminished,
+                "A" or "aug" => Quality.Augmented,
+                _ => throw new ArgumentOutOfRangeException(
+                    nameof(str), $"`{match.Groups["quality"]}` is not a valid interval quality.")
+            };
+
+            semitones += SemitoneCounts[(quality, number)];
+
+            return new Interval(semitones, quality, number);
+        }
 
         /// <summary>
         /// Creates a new interval based on a number of semitones.
