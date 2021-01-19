@@ -28,12 +28,13 @@ namespace Krixon.Music.Core
             ["𝄫"] = -2,
         };
 
-        private static readonly Regex ParserRegex = new(
-            @"^\s*(?<letter>[a-g])\s*(?<accidentals>[#s♯𝄪xb♭𝄫♮]*)\s*$", RegexOptions.IgnoreCase | RegexOptions.Compiled);
-
         public static Pitch Parse(string str)
         {
-            var match = ParserRegex.Match(str);
+            var match = Regex.Match(
+                str,
+                @"^\s*(?<letter>[a-g])\s*(?<accidentals>[#s♯𝄪xb♭𝄫♮]*)\s*$",
+                RegexOptions.IgnoreCase | RegexOptions.Compiled
+            );
 
             if (!match.Success)
             {
