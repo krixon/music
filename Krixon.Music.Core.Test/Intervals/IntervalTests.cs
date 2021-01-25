@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using Krixon.Music.Core.Intervals;
 using NUnit.Framework;
 using static Krixon.Music.Core.Intervals.Interval;
@@ -21,6 +19,8 @@ namespace Krixon.Music.Core.Test.Intervals
         [TestCase("m3", 3, Quality.Minor, Number.Third)]
         [TestCase("M3", 4, Quality.Major, Number.Third)]
         [TestCase("A3", 5, Quality.Augmented, Number.Third)]
+        [TestCase("d7", 9, Quality.Diminished, Number.Seventh)]
+        [TestCase("m7", 10, Quality.Minor, Number.Seventh)]
         [TestCase("m9", 13, Quality.Minor, Number.Second)]
         [TestCase("A8", 13, Quality.Augmented, Number.Octave)]
         [TestCase("M9", 14, Quality.Major, Number.Second)]
@@ -73,7 +73,8 @@ namespace Krixon.Music.Core.Test.Intervals
         [TestCase(11, Number.Octave, Quality.Diminished, Number.Octave)]
         [TestCase(12, null, Quality.Perfect, Number.Octave)]
         [TestCase(12, Number.Seventh, Quality.Augmented, Number.Seventh)]
-        [TestCase(13, null, Quality.Minor, Number.Second)]
+        [TestCase(13, null, Quality.Augmented, Number.Octave)]
+        [TestCase(13, Number.Second, Quality.Minor, Number.Second)]
         [TestCase(14, null, Quality.Major, Number.Second)]
         [TestCase(15, null, Quality.Minor, Number.Third)]
         [TestCase(16, null, Quality.Major, Number.Third)]
@@ -103,32 +104,29 @@ namespace Krixon.Music.Core.Test.Intervals
             Assert.That(exception.Message, Does.Contain("incompatible with semitone count").IgnoreCase);
         }
 
-        public static IEnumerable<TestCaseData> AugmentationSource()
-        {
-            yield return new TestCaseData(Unison(), AugmentedUnison());
-            yield return new TestCaseData(DiminishedSecond(), MinorSecond());
-            yield return new TestCaseData(MinorSecond(), MajorSecond());
-            yield return new TestCaseData(MajorSecond(), AugmentedSecond());
-            yield return new TestCaseData(DiminishedThird(), MinorThird());
-            yield return new TestCaseData(MinorThird(), MajorThird());
-            yield return new TestCaseData(MajorThird(), AugmentedThird());
-            yield return new TestCaseData(DiminishedFourth(), PerfectFourth());
-            yield return new TestCaseData(PerfectFourth(), AugmentedFourth());
-            yield return new TestCaseData(DiminishedFifth(), PerfectFifth());
-            yield return new TestCaseData(PerfectFifth(), AugmentedFifth());
-            yield return new TestCaseData(DiminishedSixth(), MinorSixth());
-            yield return new TestCaseData(MinorSixth(), MajorSixth());
-            yield return new TestCaseData(DiminishedSeventh(), MinorSeventh());
-            yield return new TestCaseData(MinorSeventh(), MajorSeventh());
-            yield return new TestCaseData(MajorSeventh(), AugmentedSeventh());
-            yield return new TestCaseData(DiminishedOctave(), Octave());
-        }
-
         [Test]
-        [TestCaseSource(nameof(AugmentationSource))]
-        public static void Augment(Interval start, Interval expected)
+        [TestCase("P1", "A1")]
+        [TestCase("d2", "m2")]
+        [TestCase("m2", "M2")]
+        [TestCase("M2", "A2")]
+        [TestCase("d3", "m3")]
+        [TestCase("m3", "M3")]
+        [TestCase("M3", "A3")]
+        [TestCase("d4", "P4")]
+        [TestCase("P4", "A4")]
+        [TestCase("d5", "P5")]
+        [TestCase("P5", "A5")]
+        [TestCase("d6", "m6")]
+        [TestCase("m6", "M6")]
+        [TestCase("M6", "A6")]
+        [TestCase("d7", "m7")]
+        [TestCase("m7", "M7")]
+        [TestCase("M7", "A7")]
+        [TestCase("d8", "P8")]
+        [TestCase("P8", "A8")]
+        public static void Augment(string start, string expected)
         {
-            Assert.AreEqual(expected, start.Augment());
+            Assert.AreEqual(Interval.Parse(expected), Interval.Parse(start).Augment());
         }
 
         [Test]
@@ -139,16 +137,29 @@ namespace Krixon.Music.Core.Test.Intervals
             Assert.That(exception.Message, Does.Contain("cannot be augmented").IgnoreCase);
         }
 
-        public static IEnumerable<TestCaseData> DiminutionSource()
-        {
-            return AugmentationSource().Select(data => new TestCaseData(data.Arguments[1], data.Arguments[0]));
-        }
-
         [Test]
-        [TestCaseSource(nameof(DiminutionSource))]
-        public static void Diminish(Interval start, Interval expected)
+        [TestCase("A1", "P1")]
+        [TestCase("A2", "M2")]
+        [TestCase("M2", "m2")]
+        [TestCase("m2", "d2")]
+        [TestCase("A3", "M3")]
+        [TestCase("M3", "m3")]
+        [TestCase("m3", "d3")]
+        [TestCase("A4", "P4")]
+        [TestCase("P4", "d4")]
+        [TestCase("A5", "P5")]
+        [TestCase("P5", "d5")]
+        [TestCase("A6", "M6")]
+        [TestCase("M6", "m6")]
+        [TestCase("m6", "d6")]
+        [TestCase("A7", "M7")]
+        [TestCase("M7", "m7")]
+        [TestCase("m7", "d7")]
+        [TestCase("A8", "P8")]
+        [TestCase("P8", "d8")]
+        public static void Diminish(string start, string expected)
         {
-            Assert.AreEqual(expected, start.Diminish());
+            Assert.AreEqual(Interval.Parse(expected), Interval.Parse(start).Diminish());
         }
 
         [Test]

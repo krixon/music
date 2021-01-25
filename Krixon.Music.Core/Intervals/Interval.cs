@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace Krixon.Music.Core.Intervals
@@ -82,6 +83,7 @@ namespace Krixon.Music.Core.Intervals
 
         public static Interval DiminishedOctave() => new(11, Quality.Diminished, Number.Octave);
         public static Interval Octave() => new(12, Quality.Perfect, Number.Octave);
+        public static Interval AugmentedOctave() => new(13, Quality.Augmented, Number.Octave);
 
         public static Interval Parse(string str)
         {
@@ -93,11 +95,11 @@ namespace Krixon.Music.Core.Intervals
                 throw new ArgumentException($"Interval `{str}` is not a valid interval string.");
             }
 
-            var position = int.Parse(match.Groups["number"].Value);
+            var position = int.Parse(match.Groups["number"].Value) - 1;
             var semitones = position / 7 * 12;
-            var number = (Number) ((position - 1) % 7);
+            var number = (Number) (position % 7);
 
-            if (number == Number.Unison && position > 7)
+            if (number == Number.Unison && position >= 7)
             {
                 number = Number.Octave;
                 semitones -= 12;
@@ -131,10 +133,15 @@ namespace Krixon.Music.Core.Intervals
         /// <exception cref="InvalidHintException">If number is incompatible with semitoneCount</exception>
         public static Interval FromSemitoneCount(int semitoneCount, Number? number = null)
         {
+            var (quality, number) = SemitoneCounts.First(x => x.Value == semitoneCount && (number is null || x.Key.Item2 == number))
+
+
+
             var position = semitoneCount % 12;
 
             // Ensure that Octave is used over Unison when spanning multiple octaves.
             if (position == 0 && semitoneCount > 11) position = 12;
+            if (position == 1 && semitoneCount > 12) position = 13;
 
             var interval = position switch
             {
@@ -164,6 +171,7 @@ namespace Krixon.Music.Core.Intervals
                 11 => MajorSeventh(),
                 12 when number == Number.Seventh => AugmentedSeventh(),
                 12 => Octave(),
+                13 => AugmentedOctave(),
                 _ => throw new ArgumentOutOfRangeException(
                     nameof(semitoneCount), semitoneCount, "Invalid semitone count.")
             };
